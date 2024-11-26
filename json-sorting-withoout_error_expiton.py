@@ -26,32 +26,43 @@ class Sorter:
         self.file_path = file_path
         self.data = None
 
-    def read_data(self):
+        def read_data(self):
         try:
             with open(self.file_path, "r") as f:
-                self.data = json.load(f)
-                if not isinstance(self.data, list):
-                    raise ValueError("Формат файла не соответствует ожидаемому")
+                try:
+                    self.data = json.load(f)
+                    if not isinstance(self.data, list):
+                        raise ValueError("Файл должен содержать список")
+                except json.JSONDecodeError:
+                    logging.error("Ошибка синтаксического анализа JSON: файл может быть недействительным")
+                except ValueError as e:
+                    logging.error("Ошибка при чтении файла: %s", e)
         except FileNotFoundError:
-            logging.error("Файл не найден")
-        except ValueError as e:
-            logging.error("Ошибка при чтении файла: %s", e)
+            logging.error("Файл не найден: %s", self.file_path)
 
     def sort(self, field, reverse=False):
         if self.data is None:
             self.read_data()
+        if self.data is None:
+            logging.error("Не удалось загрузить данные для сортировки")
+            return
+
         try:
+            # Фильтруем только словари
             self.data = [item for item in self.data if isinstance(item, dict)]
+            # Сортируем данные
             self.data = sorted(self.data, key=lambda x: x[field], reverse=reverse)
         except KeyError:
-            logging.error("Данное поле не найдено...", field)
+            logging.error("Данное поле не найдено: %s", field)
+        except Exception as e:
+            logging.error("Произошла ошибка при сортировке: %s", e)
 
     def write(self):
         try:
             with open(self.file_path, "w") as f:
-                json.dump(self.data, f)
+                json.dump(self.data, f, ensure_ascii=False, indent=4)
         except IOError as e:
-            logging.error("Возникла ошибка при записи файла: ", e)
+            logging.error("Возникла ошибка при записи файла: %s", e)
 
 
 def main():
