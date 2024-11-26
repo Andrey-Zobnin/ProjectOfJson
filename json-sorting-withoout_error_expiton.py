@@ -18,9 +18,11 @@ import logging
 Подумайте о том, чтобы добавить блок try-except к вызову json.load(),
 чтобы отлавливать любые ошибки синтаксического анализа JSON.
 """
+logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class Sorter:
     def __init__(self, file_path):
+        
         self.file_path = file_path
         self.data = None
 
