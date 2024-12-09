@@ -27,18 +27,18 @@ class Sorter:
         self.data = None
 
         def read_data(self):
-        try:
-            with open(self.file_path, "r") as f:
-                try:
-                    self.data = json.load(f)
-                    if not isinstance(self.data, list):
-                        raise ValueError("Файл должен содержать список")
-                except json.JSONDecodeError:
-                    logging.error("Ошибка синтаксического анализа JSON: файл может быть недействительным")
-                except ValueError as e:
-                    logging.error("Ошибка при чтении файла: %s", e)
-        except FileNotFoundError:
-            logging.error("Файл не найден: %s", self.file_path)
+            try:
+                with open(self.file_path, "r") as f:
+                    try:
+                        self.data = json.load(f)
+                        if not isinstance(self.data, list):
+                            raise ValueError("Файл должен содержать список")
+                    except json.JSONDecodeError:
+                        logging.error("Ошибка синтаксического анализа JSON: файл может быть недействительным")
+                    except ValueError as e:
+                        logging.error("Ошибка при чтении файла: %s", e)
+            except FileNotFoundError:
+                logging.error("Файл не найден: %s", self.file_path)
 
     def sort(self, field, reverse=False):
         if self.data is None:
