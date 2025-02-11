@@ -54,12 +54,7 @@ class Sorter:
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
-    
-# Ввод данных от пользователя
-file_path = input("Введите путь к JSON-файлу для сортировки: ")
-sort_field = input("Введите поле для сортировки: ")
-reverse_sort_input = input("Хотите выполнить сортировку по убыванию? (Введите 'yes' или 'no'): ")
-reverse_sort = reverse_sort_input.lower() == "yes"
+
 
 # Создание экземпляра класса Sorter с передачей аргумента file_path
 sorter = Sorter(file_path)
