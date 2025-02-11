@@ -9,5 +9,20 @@
 </head>
 <body>
     <h1>JSON Sorter</h1>
+    <form action="/sort" method="post">
+        <label for="file_path">Путь к JSON-файлу:</label>
+        <input type="text" id="file_path" name="file_path" required>
+        <br>
+        <label for="sort_field">Поле для сортировки:</label>
+        <input type="text" id="sort_field" name="sort_field" required>
+        <br>
+        <label for="reverse_sort">Сортировать по убыванию?</label>
+        <select id="reverse_sort" name="reverse_sort">
+            <option value="no">Нет</option>
+            <option value="yes">Да</option>
+        </select>
+        <br>
+        <button type="submit">Сортировать</button>
+    </form>
 </body>
 </html>
