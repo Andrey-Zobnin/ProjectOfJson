@@ -6,7 +6,7 @@ class Sorter:
     def __init__(self, file_path):
         # инициализируем файлы
         
-self.file_path = file_path
+        self.file_path = file_path
         self.data = None
 
     # чтение файла
