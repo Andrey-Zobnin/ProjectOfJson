@@ -56,6 +56,8 @@ async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
+@app.post("/sort")
+async def sort_data(request: Request, file_path: str = Form(...), sort_field: str = Form(...), reverse_sort: str = Form("no")):
 # Создание экземпляра класса Sorter с передачей аргумента file_path
 sorter = Sorter(file_path)
 
