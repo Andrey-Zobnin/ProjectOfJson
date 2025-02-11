@@ -58,12 +58,8 @@ async def read_root(request: Request):
 
 @app.post("/sort")
 async def sort_data(request: Request, file_path: str = Form(...), sort_field: str = Form(...), reverse_sort: str = Form("no")):
-# Создание экземпляра класса Sorter с передачей аргумента file_path
-sorter = Sorter(file_path)
-
-# Чтение данных из файла
-sorter.read()
-#  сортировка данных от пользователя
-sorter.sort(sort_field, reverse=reverse_sort)
-
-sorter.write()
+    sorter = Sorter(file_path)
+    sorter.read()
+    sorter.sort(sort_field, reverse=reverse_sort.lower() == "yes")
+    sorter.write()
+    return RedirectResponse(url="/", status_code=303)
