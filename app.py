@@ -10,10 +10,11 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# путь к папке static
+app.mount("/static", StaticFiles(directory="myapp/static"), name="static")
 
-# Jinja2
-templates = Jinja2Templates(directory="templates")
+# путь к папке templates
+templates = Jinja2Templates(directory="myapp/templates")
 
 class Sorter:
     def __init__(self, file_path):
