@@ -63,3 +63,7 @@ async def sort_data(request: Request, file_path: str = Form(...), sort_field: st
     sorter.sort(sort_field, reverse=reverse_sort.lower() == "yes")
     sorter.write()
     return RedirectResponse(url="/", status_code=303)
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
