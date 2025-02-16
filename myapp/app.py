@@ -43,3 +43,7 @@ class Sorter:
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/sort", methods=["POST"])
+def sort():
+
