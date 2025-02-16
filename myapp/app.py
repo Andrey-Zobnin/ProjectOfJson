@@ -46,4 +46,7 @@ def index():
 
 @app.route("/sort", methods=["POST"])
 def sort():
-
+    data = request.json
+    file_path = data.get("file_path")
+    sort_field = data.get("sort_field")
+    reverse_sort = data.get("reverse_sort") == "yes"
