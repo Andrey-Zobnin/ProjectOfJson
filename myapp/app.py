@@ -63,3 +63,5 @@ def sort():
     write_result = sorter.write()
     if isinstance(write_result, dict) and "error" in write_result:
         return jsonify({"status": "error", "message": write_result["error"]})
+
+    return jsonify({"status": "success", "message": "Данные успешно отсортированы!"})
