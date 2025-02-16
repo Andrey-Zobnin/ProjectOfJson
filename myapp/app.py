@@ -1,29 +1,15 @@
-from flask import Flask, render_template, request, jsonify
+from flask import *
 import json
+import os
 
 app = Flask(__name__)
 
 class Sorter:
-    def __init__(self, file_path=None):
-        self.file_path = file_path
+    def __init__(self):
         self.data = None
-
-    def read(self):
-        if self.file_path:
-            try:
-                with open(self.file_path, "r") as f:
-                    self.data = json.load(f)
-                    if not isinstance(self.data, list):
-                        raise ValueError("Формат файла не соответствует ожидаемому. Ожидается список.")
-                return True
-            except Exception as e:
-                return {"error": f"Ошибка при чтении файла: {e}"}
 
     def sort(self, field, reverse=False):
         if self.data is None:
-            self.read()
-
-        if not self.data:
             return {"error": "Нет данных для сортировки."}
 
         try:
@@ -34,13 +20,12 @@ class Sorter:
         except TypeError as e:
             return {"error": f"Ошибка при сортировке: {e}"}
 
-    def write(self):
-        if self.file_path and self.data is not None:
-            try:
-                with open(self.file_path, "w") as f:
-                    json.dump(self.data, f, indent=4)
-            except IOError as e:
-                return {"error": f"Ошибка при записи файла: {e}"}
+    def set_data(self, json_data):
+        self.data = json_data
+
+    def save_to_file(self, filename):
+        with open(filename, "w") as f:
+            json.dump(self.data, f, indent=4)
 
 @app.route("/")
 def index():
@@ -53,14 +38,23 @@ def sort():
     reverse_sort = data.get("reverse_sort") == "yes"
     json_data = data.get("json_data")
 
-    sorter = Sorter()  # Создаем экземпляр Sorter без указания файла
-    sorter.data = json_data  # Устанавливаем данные напрямую
-    sort_result = sorter.sort(sort_field, reverse=reverse_sort)
-    
+    sorter = Sorter()
+    sorter.set_data(json_data)
+
+    sort_result = sorter.sort(sort_field, reverse_sort)
+
     if isinstance(sort_result, dict) and "error" in sort_result:
         return jsonify({"status": "error", "message": sort_result["error"]})
 
-    return jsonify({"status": "success", "sorted_data": sorter.data})
+    # Сохраняем отсортированные данные во временный файл
+    sorted_filename = "sorted_data.json"
+    sorter.save_to_file(sorted_filename)
+
+    return jsonify({"status": "success", "sorted_file": sorted_filename})
+
+@app.route("/download/<filename>")
+def download_file(filename):
+    return send_file(filename, as_attachment=True)
 
 if __name__ == "__main__":
     app.run(debug=True)
