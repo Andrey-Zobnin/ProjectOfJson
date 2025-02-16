@@ -14,40 +14,41 @@
             <div class="card-body">
                 <form id="sortForm">
                     <div class="form-group">
-                        <label for="fileInput">Перетащите JSON-файл сюда:</label>
+                        <label for="fileInput">Drag and drop a JSON file here:</label>
                         <div id="dropArea" class="border p-3 text-center">
-                            Перетащите файл сюда или <input type="file" id="fileInput" accept=".json">
+                            Drag a file here or <input type="file" id="fileInput" accept=".json">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="sort_field">Поле для сортировки:</label>
+                        <label for="sort_field">Field to sort by:</label>
                         <select class="form-control" id="sort_field" name="sort_field" required>
-                            <option value="">Выберите поле</option>
+                            <option value="">Select field</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Сортировать по:</label>
+                        <label>Sort by:</label>
                         <select class="form-control" id="reverse_sort" name="reverse_sort">
-                            <option value="no">По возрастанию</option>
-                            <option value="yes">По убыванию</option>
+                            <option value="no">Ascending</option>
+                            <option value="yes">Descending</option>
                         </select>
                     </div>
-                    <button type="button" class="btn btn-primary" id="sortBtn">Сортировать</button>
-                    <button type="button" class="btn btn-success" id="downloadBtn" style="display: none;">Скачать отсортированный файл</button>
-                    <button type="button" class="btn btn-info" id="copyBtn" style="display: none;">Копировать содержимое</button>
+                    <button type="button" class="btn btn-primary" id="sortBtn">Sort</button>
+                    <button type="button" class="btn btn-success" id="downloadBtn" style="display: none;">Download Sorted File</button>
                 </form>
                 <p id="result" class="mt-3"></p>
                 <div id="progress" class="mt-3" style="display: none;">
-                    <p>Прогресс сортировки: <span id="progressText">Загрузка...</span></p>
+                    <p>Sorting progress: <span id="progressText">Loading...</span></p>
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-6">
-                        <h5>Содержимое загруженного файла:</h5>
+                        <h5>Uploaded File Content:</h5>
                         <pre id="contentDisplay" style="border: 1px solid #ccc; padding: 10px;"></pre>
+                        <button type="button" class="btn btn-info" id="copyUploadedBtn">Copy Uploaded Content</button>
                     </div>
                     <div class="col-md-6">
-                        <h5>Содержимое отсортированного файла:</h5>
+                        <h5>Sorted File Content:</h5>
                         <pre id="sortedContentDisplay" style="border: 1px solid #ccc; padding: 10px;"></pre>
+                        <button type="button" class="btn btn-info" id="copySortedBtn" style="display: none;">Copy Sorted Content</button>
                     </div>
                 </div>
             </div>
