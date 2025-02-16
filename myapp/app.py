@@ -4,6 +4,7 @@ import json
 
 app = Flask(__name__)
 
+# Загружаем данные из файла при старте приложения
 class Sorter:
     def __init__(self):
         self.data = None
