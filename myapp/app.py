@@ -2,7 +2,10 @@ import os
 from flask import Flask, render_template, request, jsonify, send_file
 import json
 
+# Загрузка исходных данных из JSON файла
+
 app = Flask(__name__)
+
 
 class Sorter:
     def __init__(self):
