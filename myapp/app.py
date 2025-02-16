@@ -65,3 +65,6 @@ def sort():
         return jsonify({"status": "error", "message": write_result["error"]})
 
     return jsonify({"status": "success", "message": "Данные успешно отсортированы!"})
+
+if __name__ == "__main__":
+    app.run(debug=True)
