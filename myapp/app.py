@@ -50,3 +50,6 @@ def sort():
     file_path = data.get("file_path")
     sort_field = data.get("sort_field")
     reverse_sort = data.get("reverse_sort") == "yes"
+
+    sorter = Sorter(file_path)
+    
