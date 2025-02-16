@@ -1,6 +1,6 @@
 let jsonData = null;
 let sortedData = null;
-let currentLanguage = 'en'; // Default language
+let currentLanguage = 'ru'; // Default language
 
 document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 
