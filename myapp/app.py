@@ -32,3 +32,14 @@ class Sorter:
             return {"error": f"Поле '{field}' не найдено в данных."}
         except TypeError as e:
             return {"error": f"Ошибка при сортировке: {e}"}
+
+    def write(self):
+        try:
+            with open(self.file_path, "w") as f:
+                json.dump(self.data, f, indent=4)
+        except IOError as e:
+            return {"error": f"Ошибка при записи файла: {e}"}
+
+@app.route("/")
+def index():
+    return render_template("index.html")
