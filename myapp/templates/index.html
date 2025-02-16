@@ -4,26 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSON Sorter</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>JSON Sorter</h1>
-    <form id="sortForm">
-        <label for="file_path">Путь к JSON-файлу:</label>
-        <input type="text" id="file_path" name="file_path" required>
-        <br>
-        <label for="sort_field">Поле для сортировки:</label>
-        <input type="text" id="sort_field" name="sort_field" required>
-        <br>
-        <label for="reverse_sort">Сортировать по убыванию?</label>
-        <select id="reverse_sort" name="reverse_sort">
-            <option value="no">Нет</option>
-            <option value="yes">Да</option>
-        </select>
-        <br>
-        <button type="submit">Сортировать</button>
-    </form>
-    <p id="result"></p>
+    <div class="container mt-5">
+        <h1 class="text-center">JSON Sorter</h1>
+        <div class="card">
+            <div class="card-body">
+                <form id="sortForm">
+                    <div class="form-group">
+                        <label for="fileInput">Перетащите JSON-файл сюда:</label>
+                        <div id="dropArea" class="border p-3 text-center">
+                            Перетащите файл сюда или <input type="file" id="fileInput" accept=".json">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sort_field">Поле для сортировки:</label>
+                        <select class="form-control" id="sort_field" name="sort_field" required>
+                            <option value="">Выберите поле</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reverse_sort">Сортировать по убыванию?</label>
+                        <select class="form-control" id="reverse_sort" name="reverse_sort">
+                            <option value="no">Нет</option>
+                            <option value="yes">Да</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Сортировать</button>
+                </form>
+                <p id="result" class="mt-3"></p>
+            </div>
+        </div>
+    </div>
 
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
