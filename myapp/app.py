@@ -17,3 +17,7 @@ class Sorter:
             return True
         except Exception as e:
             return {"error": f"Ошибка при чтении файла: {e}"}
+
+    def sort(self, field, reverse=False):
+        if self.data is None:
+            self.read()
