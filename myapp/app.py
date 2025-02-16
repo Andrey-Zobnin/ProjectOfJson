@@ -21,3 +21,7 @@ class Sorter:
     def sort(self, field, reverse=False):
         if self.data is None:
             self.read()
+
+        if not self.data:
+            return {"error": "Нет данных для сортировки."}
+
