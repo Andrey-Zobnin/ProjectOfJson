@@ -53,4 +53,13 @@ def sort():
 
     sorter = Sorter(file_path)
     read_result = sorter.read()
-    
+    if isinstance(read_result, dict) and "error" in read_result:
+        return jsonify({"status": "error", "message": read_result["error"]})
+
+    sort_result = sorter.sort(sort_field, reverse=reverse_sort)
+    if isinstance(sort_result, dict) and "error" in sort_result:
+        return jsonify({"status": "error", "message": sort_result["error"]})
+
+    write_result = sorter.write()
+    if isinstance(write_result, dict) and "error" in write_result:
+        return jsonify({"status": "error", "message": write_result["error"]})
