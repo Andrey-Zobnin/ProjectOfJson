@@ -1,6 +1,6 @@
 let jsonData = null;
 let sortedData = null;
-let currentLanguage = 'ru'; // Default language
+let currentLanguage = 'ru'; // Default language set to Russian
 
 document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 
@@ -127,26 +127,41 @@ document.getElementById("copySortedBtn").addEventListener("click", () => {
     });
 });
 
-// Language selection handler
 document.getElementById("languageSelect").addEventListener("change", (e) => {
-    currentLanguage = e.target.value; // Update the current language
-    updateLanguage(); // Update the UI text based on the selected language
+    currentLanguage = e.target.value;
+    updateLanguage();
 });
 
-// Function to update UI text based on the selected language
 function updateLanguage() {
+    document.getElementById("title").textContent = getLocalizedText("title");
+    document.getElementById("fileInputLabel").textContent = getLocalizedText("fileInputLabel");
+    document.getElementById("dropAreaText").textContent = getLocalizedText("dropAreaText");
+    document.getElementById("sortFieldLabel").textContent = getLocalizedText("sortFieldLabel");
+    document.getElementById("sortByLabel").textContent = getLocalizedText("sortByLabel");
     document.getElementById("sortBtn").textContent = getLocalizedText("sort");
     document.getElementById("downloadBtn").textContent = getLocalizedText("downloadSortedFile");
+    document.getElementById("uploadedContentLabel").textContent = getLocalizedText("uploadedContentLabel");
+    document.getElementById("sortedContentLabel").textContent = getLocalizedText("sortedContentLabel");
     document.getElementById("copyUploadedBtn").textContent = getLocalizedText("copyUploadedContent");
     document.getElementById("copySortedBtn").textContent = getLocalizedText("copySortedContent");
-    document.getElementById("result").textContent = ""; // Clear result message
+    document.getElementById("result").textContent = "";
     document.getElementById("progressText").textContent = getLocalizedText("loading");
 }
 
-// Function to get localized text based on the current language
 function getLocalizedText(key) {
     const translations = {
         en: {
+            title: "JSON Sorter",
+            fileInputLabel: "Drag and drop a JSON file here:",
+            dropAreaText: "Drag a file here or <input type='file' id='fileInput' accept='.json'>",
+            sortFieldLabel: "Field to sort by:",
+            sortByLabel: "Sort by:",
+            sort: "Sort",
+            downloadSortedFile: "Download Sorted File",
+            uploadedContentLabel: "Uploaded File Content:",
+            sortedContentLabel: "Sorted File Content:",
+            copyUploadedContent: "Copy Uploaded Content",
+            copySortedContent: "Copy Sorted Content",
             fileLoaded: "File loaded successfully!",
             errorReadingFile: "Error reading file: ",
             invalidFile: "Please select a valid JSON file.",
@@ -155,13 +170,20 @@ function getLocalizedText(key) {
             sortingInProgress: "Sorting in progress...",
             uploadedContentCopied: "The content of the uploaded file has been copied to the clipboard!",
             sortedContentCopied: "The content of the sorted file has been copied to the clipboard!",
-            sort: "Sort",
-            downloadSortedFile: "Download Sorted File",
-            copyUploadedContent: "Copy Uploaded Content",
-            copySortedContent: "Copy Sorted Content",
             loading: "Loading..."
         },
         ru: {
+            title: "Сортировщик JSON",
+            fileInputLabel: "Перетащите JSON-файл сюда:",
+            dropAreaText: "Перетащите файл сюда или <input type='file' id='fileInput' accept='.json'>",
+            sortFieldLabel: "Поле для сортировки:",
+            sortByLabel: "Сортировать по:",
+            sort: "Сортировать",
+            downloadSortedFile: "Скачать отсортированный файл",
+            uploadedContentLabel: "Содержимое загруженного файла:",
+            sortedContentLabel: "Содержимое отсортированного файла:",
+            copyUploadedContent: "Скопировать содержимое загруженного файла",
+            copySortedContent: "Скопировать содержимое отсортированного файла",
             fileLoaded: "Файл загружен успешно!",
             errorReadingFile: "Ошибка при чтении файла: ",
             invalidFile: "Пожалуйста, выберите корректный JSON-файл.",
@@ -170,12 +192,8 @@ function getLocalizedText(key) {
             sortingInProgress: "Сортировка в процессе...",
             uploadedContentCopied: "Содержимое загруженного файла скопировано в буфер обмена!",
             sortedContentCopied: "Содержимое отсортированного файла скопировано в буфер обмена!",
-            sort: "Сортировать",
-            downloadSortedFile: "Скачать отсортированный файл",
-            copyUploadedContent: "Скопировать содержимое загруженного файла",
-            copySortedContent: "Скопировать содержимое отсортированного файла",
             loading: "Загрузка..."
         }
     };
-    return translations[currentLanguage][key]; // Return the localized text based on the current language
+    return translations[currentLanguage][key];
 }
