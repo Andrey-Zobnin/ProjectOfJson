@@ -52,4 +52,5 @@ def sort():
     reverse_sort = data.get("reverse_sort") == "yes"
 
     sorter = Sorter(file_path)
+    read_result = sorter.read()
     
