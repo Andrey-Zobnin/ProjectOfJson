@@ -49,7 +49,7 @@ def sort():
     sorted_filename = "sorted_data.json"
     sorter.save_to_file(sorted_filename)
 
-    return jsonify({"status": "success", "sorted_file": sorted_filename})
+    return jsonify({"status": "success", "sorted_file": sorted_filename, "sorted_data": sorter.data})
 
 @app.route("/download/<filename>")
 def download_file(filename):
