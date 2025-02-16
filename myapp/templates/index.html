@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Sorter</title>
+    <title>Сортировщик JSON</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
@@ -22,30 +22,30 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="text-center" id="title">JSON Sorter</h1>
+        <h1 class="text-center" id="title">Сортировщик JSON</h1>
         <div class="text-right mb-3">
             <select id="languageSelect" class="form-control" style="width: auto; display: inline;">
                 <option value="en">English</option>
-                <option value="ru">Русский</option>
+                <option value="ru" selected>Русский</option>
             </select>
         </div>
         <div class="card">
             <div class="card-body">
                 <form id="sortForm">
                     <div class="form-group">
-                        <label for="fileInput" id="fileInputLabel">Drag and drop a JSON file here:</label>
+                        <label for="fileInput" id="fileInputLabel">Перетащите JSON-файл сюда:</label>
                         <div id="dropArea" class="border p-3 text-center">
-                            <span id="dropAreaText">Drag a file here or <input type="file" id="fileInput" accept=".json"></span>
+                            <span id="dropAreaText">Перетащите файл сюда или <input type="file" id="fileInput" accept=".json" style="display: inline;"> </span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="sort_field" id="sortFieldLabel">Field to sort by:</label>
+                        <label for="sort_field" id="sortFieldLabel">Поле для сортировки:</label>
                         <select class="form-control" id="sort_field" name="sort_field" required>
                             <option value="">{{ selectField }}</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label id="sortByLabel">Sort by:</label>
+                        <label id="sortByLabel">Сортировать по:</label>
                         <select class="form-control" id="reverse_sort" name="reverse_sort">
                             <option value="no">{{ ascending }}</option>
                             <option value="yes">{{ descending }}</option>
@@ -56,16 +56,16 @@
                 </form>
                 <p id="result" class="mt-3"></p>
                 <div id="progress" class="mt-3" style="display: none;">
-                    <p>{{ sortingProgress }}: <span id="progressText">Loading...</span></p>
+                    <p>{{ sortingProgress }}: <span id="progressText">Загрузка...</span></p>
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-6">
-                        <h5 id="uploadedContentLabel">Uploaded File Content:</h5>
+                        <h5 id="uploadedContentLabel">Содержимое загруженного файла:</h5>
                         <button type="button" class="copy-btn" id="copyUploadedBtn">{{ copyUploadedContent }}</button>
                         <pre id="contentDisplay" style="border: 1px solid #ccc; padding: 10px;"></pre>
                     </div>
                     <div class="col-md-6">
-                        <h5 id="sortedContentLabel">Sorted File Content:</h5>
+                        <h5 id="sortedContentLabel">Содержимое отсортированного файла:</h5>
                         <button type="button" class="copy-btn" id="copySortedBtn" style="display: none;">{{ copySortedContent }}</button>
                         <pre id="sortedContentDisplay" style="border: 1px solid #ccc; padding: 10px;"></pre>
                     </div>
