@@ -1,5 +1,6 @@
 let jsonData = null;
 let sortedData = null;
+let currentLanguage = 'en'; // Default language
 
 document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 
@@ -33,21 +34,21 @@ async function handleFileSelect(event) {
             try {
                 jsonData = JSON.parse(e.target.result);
                 populateSortField(jsonData);
-                document.getElementById("result").textContent = "File loaded successfully!";
+                document.getElementById("result").textContent = getLocalizedText("fileLoaded");
                 displayFileContent(jsonData);
             } catch (error) {
-                document.getElementById("result").textContent = "Error reading file: " + error.message;
+                document.getElementById("result").textContent = getLocalizedText("errorReadingFile") + error.message;
             }
         };
         reader.readAsText(file);
     } else {
-        document.getElementById("result").textContent = "Please select a valid JSON file.";
+        document.getElementById("result").textContent = getLocalizedText("invalidFile");
     }
 }
 
 function populateSortField(data) {
     const sortFieldSelect = document.getElementById("sort_field");
-    sortFieldSelect.innerHTML = '<option value="">Select field</option>';
+    sortFieldSelect.innerHTML = '<option value="">' + getLocalizedText("selectField") + '</option>';
 
     if (Array.isArray(data) && data.length > 0) {
         const fields = Object.keys(data[0]);
@@ -65,12 +66,12 @@ document.getElementById("sortBtn").addEventListener("click", async () => {
     const reverseSort = document.getElementById("reverse_sort").value === "yes";
 
     if (!jsonData) {
-        document.getElementById("result").textContent = "Please upload a JSON file first.";
+        document.getElementById("result").textContent = getLocalizedText("uploadFileFirst");
         return;
     }
 
     document.getElementById("progress").style.display = "block";
-    document.getElementById("progressText").textContent = "Sorting in progress...";
+    document.getElementById("progressText").textContent = getLocalizedText("sortingInProgress");
 
     const response = await fetch("/sort", {
         method: "POST",
@@ -111,7 +112,7 @@ function displaySortedContent(data) {
 document.getElementById("copyUploadedBtn").addEventListener("click", () => {
     const uploadedContent = document.getElementById("contentDisplay").textContent;
     navigator.clipboard.writeText(uploadedContent).then(() => {
-        alert("The content of the uploaded file has been copied to the clipboard!");
+        alert(getLocalizedText("uploadedContentCopied"));
     }).catch(err => {
         console.error("Error copying: ", err);
     });
@@ -120,8 +121,61 @@ document.getElementById("copyUploadedBtn").addEventListener("click", () => {
 document.getElementById("copySortedBtn").addEventListener("click", () => {
     const sortedContent = document.getElementById("sortedContentDisplay").textContent;
     navigator.clipboard.writeText(sortedContent).then(() => {
-        alert("The content of the sorted file has been copied to the clipboard!");
+        alert(getLocalizedText("sortedContentCopied"));
     }).catch(err => {
         console.error("Error copying: ", err);
     });
 });
+
+// Language selection handler
+document.getElementById("languageSelect").addEventListener("change", (e) => {
+    currentLanguage = e.target.value; // Update the current language
+    updateLanguage(); // Update the UI text based on the selected language
+});
+
+// Function to update UI text based on the selected language
+function updateLanguage() {
+    document.getElementById("sortBtn").textContent = getLocalizedText("sort");
+    document.getElementById("downloadBtn").textContent = getLocalizedText("downloadSortedFile");
+    document.getElementById("copyUploadedBtn").textContent = getLocalizedText("copyUploadedContent");
+    document.getElementById("copySortedBtn").textContent = getLocalizedText("copySortedContent");
+    document.getElementById("result").textContent = ""; // Clear result message
+    document.getElementById("progressText").textContent = getLocalizedText("loading");
+}
+
+// Function to get localized text based on the current language
+function getLocalizedText(key) {
+    const translations = {
+        en: {
+            fileLoaded: "File loaded successfully!",
+            errorReadingFile: "Error reading file: ",
+            invalidFile: "Please select a valid JSON file.",
+            selectField: "Select field",
+            uploadFileFirst: "Please upload a JSON file first.",
+            sortingInProgress: "Sorting in progress...",
+            uploadedContentCopied: "The content of the uploaded file has been copied to the clipboard!",
+            sortedContentCopied: "The content of the sorted file has been copied to the clipboard!",
+            sort: "Sort",
+            downloadSortedFile: "Download Sorted File",
+            copyUploadedContent: "Copy Uploaded Content",
+            copySortedContent: "Copy Sorted Content",
+            loading: "Loading..."
+        },
+        ru: {
+            fileLoaded: "Файл загружен успешно!",
+            errorReadingFile: "Ошибка при чтении файла: ",
+            invalidFile: "Пожалуйста, выберите корректный JSON-файл.",
+            selectField: "Выберите поле",
+            uploadFileFirst: "Сначала загрузите JSON-файл.",
+            sortingInProgress: "Сортировка в процессе...",
+            uploadedContentCopied: "Содержимое загруженного файла скопировано в буфер обмена!",
+            sortedContentCopied: "Содержимое отсортированного файла скопировано в буфер обмена!",
+            sort: "Сортировать",
+            downloadSortedFile: "Скачать отсортированный файл",
+            copyUploadedContent: "Скопировать содержимое загруженного файла",
+            copySortedContent: "Скопировать содержимое отсортированного файла",
+            loading: "Загрузка..."
+        }
+    };
+    return translations[currentLanguage][key]; // Return the localized text based on the current language
+}
