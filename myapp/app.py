@@ -25,3 +25,10 @@ class Sorter:
         if not self.data:
             return {"error": "Нет данных для сортировки."}
 
+        try:
+            self.data = [item for item in self.data if isinstance(item, dict)]
+            self.data = sorted(self.data, key=lambda x: x.get(field), reverse=reverse)
+        except KeyError:
+            return {"error": f"Поле '{field}' не найдено в данных."}
+        except TypeError as e:
+            return {"error": f"Ошибка при сортировке: {e}"}
