@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, jsonify, send_file
 import json
 
@@ -44,16 +45,21 @@ def sort():
 
     if isinstance(sort_result, dict) and "error" in sort_result:
         return jsonify({"status": "error", "message": sort_result["error"]})
-
-    # Сохраняем отсортированные данные во временный файл
-    sorted_filename = "sorted_data.json"
+    sorted_filename = os.path.join(os.getcwd(), "sorted_data.json")  
     sorter.save_to_file(sorted_filename)
 
     return jsonify({"status": "success", "sorted_file": sorted_filename, "sorted_data": sorter.data})
 
-@app.route("/download/<filename>")
-def download_file(filename):
-    return send_file(filename, as_attachment=True)
 
+@app.route('/download')
+
+def download_file():
+
+    filename = '/home/andy/d1dev/sorted_data.json'
+
+    if not os.path.exists(filename):
+        abort(404)  # Возвращает ошибку 404, если файл не найден
+
+    return send_file(filename, as_attachment=True)
 if __name__ == "__main__":
     app.run(debug=True)
