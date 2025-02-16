@@ -91,13 +91,10 @@ document.getElementById("sortBtn").addEventListener("click", async () => {
         sortedData = result.sorted_data;
         displaySortedContent(sortedData);
         document.getElementById("downloadBtn").style.display = "block";
-        document.getElementById("copyBtn").style.display = "block";
-        document.getElementById("downloadBtn").onclick = () => {
-            window.location.href = `/download/${result.sorted_file}`;
-        };
+        document.getElementById("copySortedBtn").style.display = "block";
     } else {
         document.getElementById("downloadBtn").style.display = "none";
-        document.getElementById("copyBtn").style.display = "none";
+        document.getElementById("copySortedBtn").style.display = "none";
     }
 });
 
@@ -111,7 +108,16 @@ function displaySortedContent(data) {
     sortedContentDisplay.textContent = JSON.stringify(data, null, 2);
 }
 
-document.getElementById("copyBtn").addEventListener("click", () => {
+document.getElementById("copyUploadedBtn").addEventListener("click", () => {
+    const uploadedContent = document.getElementById("contentDisplay").textContent;
+    navigator.clipboard.writeText(uploadedContent).then(() => {
+        alert("The content of the uploaded file has been copied to the clipboard!");
+    }).catch(err => {
+        console.error("Error copying: ", err);
+    });
+});
+
+document.getElementById("copySortedBtn").addEventListener("click", () => {
     const sortedContent = document.getElementById("sortedContentDisplay").textContent;
     navigator.clipboard.writeText(sortedContent).then(() => {
         alert("The content of the sorted file has been copied to the clipboard!");
