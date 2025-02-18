@@ -10,7 +10,7 @@ async function handleFileSelect(event) {
         reader.onload = (e) => {
             try {
                 jsonData = JSON.parse(e.target.result);
-                document.getElementById("contentDisplay").textContent = JSON.stringify(jsonData, null, 2);
+                document.getElementById("contentDisplay").innerHTML = formatJsonWithLineNumbers(jsonData);
                 document.getElementById("result").textContent = "Файл загружен успешно!";
                 updateSortFieldOptions(jsonData);
             } catch (error) {
@@ -23,9 +23,14 @@ async function handleFileSelect(event) {
     }
 }
 
+function formatJsonWithLineNumbers(data) {
+    const jsonString = JSON.stringify(data, null, 2);
+    return jsonString.split('\n').map(line => `<div>${line}</div>`).join('');
+}
+
 function updateSortFieldOptions(data) {
     const sortFieldSelect = document.getElementById("sort_field");
-    sortFieldSelect.innerHTML = ""; // Очистить предыдущие опции
+    sortFieldSelect.innerHTML = "";
 
     if (data.length > 0) {
         const fields = Object.keys(data[0]);
@@ -47,7 +52,6 @@ async function sortJson() {
         return;
     }
 
-    // Отправка данных на сервер для сортировки
     const response = await fetch("/sort", {
         method: "POST",
         headers: {
@@ -65,7 +69,7 @@ async function sortJson() {
     if (result.status === "error") {
         document.getElementById("result").textContent = result.message;
     } else {
-        document.getElementById("sortedContentDisplay").textContent = JSON.stringify(result.sorted_data, null, 2);
+        document.getElementById("sortedContentDisplay").innerHTML = formatJsonWithLineNumbers(result.sorted_data);
         document.getElementById("copySortedBtn").style.display = "block";
         document.getElementById("result").textContent = "Сортировка завершена!";
     }
@@ -75,7 +79,7 @@ document.getElementById("copyUploadedBtn").addEventListener("click", copyUploade
 document.getElementById("copySortedBtn").addEventListener("click", copySortedContent);
 
 function copyUploadedContent() {
-    const uploadedContent = document.getElementById("contentDisplay").textContent;
+    const uploadedContent = document.getElementById("contentDisplay").innerText;
     navigator.clipboard.writeText(uploadedContent).then(() => {
         alert("Содержимое загруженного файла скопировано в буфер обмена!");
     }).catch(err => {
@@ -84,7 +88,7 @@ function copyUploadedContent() {
 }
 
 function copySortedContent() {
-    const sortedContent = document.getElementById("sortedContentDisplay").textContent;
+    const sortedContent = document.getElementById("sortedContentDisplay").innerText;
     navigator.clipboard.writeText(sortedContent).then(() => {
         alert("Содержимое отсортированного файла скопировано в буфер обмена!");
     }).catch(err => {
