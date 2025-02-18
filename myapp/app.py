@@ -4,35 +4,29 @@ import json
 
 app = Flask(__name__)
 
-# Загружаем данные из файла при старте приложения
 class Sorter:
     def __init__(self):
         self.data = None
 
-    def read_from_file(self, filename):
-        """Читает данные из файла и устанавливает их в self.data."""
-        with open(filename, "r") as f:
-            self.data = json.load(f)
+    def set_data(self, data):
+        self.data = data
 
-    def write_to_file(self, filename):
-        """Сохраняет данные в файл."""
-        with open(filename, "w") as f:
-            json.dump(self.data, f, indent=4)
-
-    def sort(self, field, reverse=False):
+    def sort(self, field=None, reverse=False):
         if self.data is None:
             return {"error": "Нет данных для сортировки."}
-
         try:
             self.data = [item for item in self.data if isinstance(item, dict)]
+            if field is None and self.data:
+                field = list(self.data[0].keys())[0]
             self.data = sorted(self.data, key=lambda x: x.get(field), reverse=reverse)
         except KeyError:
             return {"error": f"Поле '{field}' не найдено в данных."}
         except TypeError as e:
             return {"error": f"Ошибка при сортировке: {e}"}
 
-    def set_data(self, json_data):
-        self.data = json_data
+    def write_to_file(self, filename):
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(self.data, f, ensure_ascii=False, indent=4)
 
 @app.route("/")
 def index():

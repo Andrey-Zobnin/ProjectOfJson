@@ -9,13 +9,14 @@
 }
 
 #dropArea.bg-success {
-    background-color: #28a745; /* Зеленый цвет для успешной загрузки */
-}   
+    background-color: #28a745;
+}
+
 .btn.active {
-    background-color: #28a745; /* Зеленый цвет для активной кнопки */
+    background-color: #28a745;
     color: white;
 }
 
 .btn.active:hover {
-    background-color: #25a049; /* Зеленый цвет при наведении на активную кнопку */
+    background-color: #25a049;
 }
