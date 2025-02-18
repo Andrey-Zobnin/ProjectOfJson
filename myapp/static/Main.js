@@ -1,30 +1,7 @@
 let jsonData = null;
-let sortedData = null;
-let currentLanguage = 'ru'; // defualt launguage
 
 document.getElementById("fileInput").addEventListener("change", handleFileSelect);
-
-document.getElementById("dropArea").addEventListener("dragover", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    e.target.classList.add("bg-light");
-});
-
-document.getElementById("dropArea").addEventListener("dragleave", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    e.target.classList.remove("bg-light");
-});
-
-document.getElementById("dropArea").addEventListener("drop", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    e.target.classList.remove("bg-light");
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-        handleFileSelect({ target: { files } });
-    }
-});
+document.getElementById("sortBtn").addEventListener("click", sortJson);
 
 async function handleFileSelect(event) {
     const file = event.target.files[0];
@@ -35,6 +12,7 @@ async function handleFileSelect(event) {
                 jsonData = JSON.parse(e.target.result);
                 document.getElementById("contentDisplay").textContent = JSON.stringify(jsonData, null, 2);
                 document.getElementById("result").textContent = "Файл загружен успешно!";
+                updateSortFieldOptions(jsonData);
             } catch (error) {
                 document.getElementById("result").textContent = "Ошибка при чтении файла: " + error.message;
             }
@@ -45,27 +23,56 @@ async function handleFileSelect(event) {
     }
 }
 
+function updateSortFieldOptions(data) {
+    const sortFieldSelect = document.getElementById("sort_field");
+    sortFieldSelect.innerHTML = ""; // Очистить предыдущие опции
+
+    if (data.length > 0) {
+        const fields = Object.keys(data[0]);
+        fields.forEach(field => {
+            const option = document.createElement("option");
+            option.value = field;
+            option.textContent = field;
+            sortFieldSelect.appendChild(option);
+        });
+    }
+}
+
 async function sortJson() {
     const sortField = document.getElementById("sort_field").value;
     const reverseSort = document.getElementById("reverse_sort").value === "yes";
 
-    if (!jsonData) {
+    if (!jsonData || jsonData.length === 0) {
         document.getElementById("result").textContent = "Пожалуйста, загрузите JSON-файл сначала.";
         return;
     }
 
-    const sortedData = jsonData.sort((a, b) => {
-        if (reverseSort) {
-            return b[sortField] < a[sortField] ? -1 : 1;
-        } else {
-            return a[sortField] < b[sortField] ? -1 : 1;
-        }
+    // Отправка данных на сервер для сортировки
+    const response = await fetch("/sort", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            json_data: jsonData,
+            sort_field: sortField,
+            reverse_sort: reverseSort ? "yes" : "no"
+        })
     });
 
-    document.getElementById("sortedContentDisplay").textContent = JSON.stringify(sortedData, null, 2);
-    document.getElementById("copySortedBtn").style.display = "block";
-    document.getElementById("result").textContent = "Сортировка завершена!";
+    const result = await response.json();
+
+    if (result.status === "error") {
+        document.getElementById("result").textContent = result.message;
+    } else {
+        document.getElementById("sortedContentDisplay").textContent = JSON.stringify(result.sorted_data, null, 2);
+        document.getElementById("copySortedBtn").style.display = "block";
+        document.getElementById("result").textContent = "Сортировка завершена!";
+    }
 }
+
+document.getElementById("copyUploadedBtn").addEventListener("click", copyUploadedContent);
+document.getElementById("copySortedBtn").addEventListener("click", copySortedContent);
 
 function copyUploadedContent() {
     const uploadedContent = document.getElementById("contentDisplay").textContent;
