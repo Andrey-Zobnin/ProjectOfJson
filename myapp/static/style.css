@@ -11,6 +11,7 @@
 #dropArea.bg-success {
     background-color: #28a745; /* Зеленый цвет для успешной загрузки */
 }   
+
 .btn.active {
     background-color: #28a745; /* Зеленый цвет для активной кнопки */
     color: white;
