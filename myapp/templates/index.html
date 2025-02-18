@@ -8,15 +8,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         .copy-btn {
-            font-size: 0.8em; /* Smaller font size */
-            margin-bottom: 5px; /* Space below the button */
-            background-color: transparent; /* Transparent background */
-            border: none; /* No border */
-            color: #007bff; /* Bootstrap primary color */
-            cursor: pointer; /* Pointer cursor */
+            font-size: 0.8em; /* Меньший размер шрифта */
+            margin-bottom: 5px; /* Пробел ниже кнопки */
+            background-color: transparent; /* Прозрачный фон */
+            border: none; /* Без границы */
+            color: #007bff; /* Основной цвет Bootstrap */
+            cursor: pointer; /* Указатель курсора */
         }
         .copy-btn:hover {
-            text-decoration: underline; /* Underline on hover */
+            text-decoration: underline; /* Подчеркивание при наведении */
         }
     </style>
 </head>
@@ -25,7 +25,6 @@
         <h1 class="text-center" id="title">Сортировщик JSON</h1>
         <div class="text-right mb-3">
             <select id="languageSelect" class="form-control" style="width: auto; display: inline;">
-                <option value="en">English</option>
                 <option value="ru" selected>Русский</option>
             </select>
         </div>
@@ -41,32 +40,32 @@
                     <div class="form-group">
                         <label for="sort_field" id="sortFieldLabel">Поле для сортировки:</label>
                         <select class="form-control" id="sort_field" name="sort_field" required>
-                            <option value="">{{ selectField }}</option>
+                            <option value="">Выберите поле</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label id="sortByLabel">Сортировать по:</label>
                         <select class="form-control" id="reverse_sort" name="reverse_sort">
-                            <option value="no">{{ ascending }}</option>
-                            <option value="yes">{{ descending }}</option>
+                            <option value="no">По возрастанию</option>
+                            <option value="yes">По убыванию</option>
                         </select>
                     </div>
-                    <button type="button" class="btn btn-primary" id="sortBtn">{{ sort }}</button>
-                    <button type="button" class="btn btn-success" id="downloadBtn" style="display: none;">{{ downloadSortedFile }}</button>
+                    <button type="button" class="btn btn-primary" id="sortBtn">Сортировать</button>
+                    <button type="button" class="btn btn-success" id="downloadBtn" style="display: none;">Скачать отсортированный файл</button>
                 </form>
                 <p id="result" class="mt-3"></p>
                 <div id="progress" class="mt-3" style="display: none;">
-                    <p>{{ sortingProgress }}: <span id="progressText">Загрузка...</span></p>
+                    <p>Сортировка в процессе: <span id="progressText">Загрузка...</span></p>
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-6">
                         <h5 id="uploadedContentLabel">Содержимое загруженного файла:</h5>
-                        <button type="button" class="copy-btn" id="copyUploadedBtn">{{ copyUploadedContent }}</button>
+                        <button type="button" class="copy-btn" id="copyUploadedBtn">Скопировать содержимое загруженного файла</button>
                         <pre id="contentDisplay" style="border: 1px solid #ccc; padding: 10px;"></pre>
                     </div>
                     <div class="col-md-6">
                         <h5 id="sortedContentLabel">Содержимое отсортированного файла:</h5>
-                        <button type="button" class="copy-btn" id="copySortedBtn" style="display: none;">{{ copySortedContent }}</button>
+                        <button type="button" class="copy-btn" id="copySortedBtn" style="display: none;">Скопировать содержимое отсортированного файла</button>
                         <pre id="sortedContentDisplay" style="border: 1px solid #ccc; padding: 10px;"></pre>
                     </div>
                 </div>
@@ -75,5 +74,68 @@
     </div>
 
     <script src="{{ url_for('static', filename='Main.js') }}"></script>
+    <script>
+        // Новые функции для обработки загрузки файлов и сортировки
+        document.getElementById("fileInput").addEventListener("change", handleFileSelect);
+        document.getElementById("sortBtn").addEventListener("click", sortJson);
+        document.getElementById("copyUploadedBtn").addEventListener("click", copyUploadedContent);
+        document.getElementById("copySortedBtn").addEventListener("click", copySortedContent);
+
+        async function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file && file.type === "application/json") {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const jsonData = JSON.parse(e.target.result);
+                        document.getElementById("contentDisplay").textContent = JSON.stringify(jsonData, null, 2);
+                        document.getElementById("result").textContent = "Файл загружен успешно!";
+                    } catch (error) {
+                        document.getElementById("result").textContent = "Ошибка при чтении файла: " + error.message;
+                    }
+                };
+                reader.readAsText(file);
+            } else {
+                document.getElementById("result").textContent = "Пожалуйста, выберите корректный JSON-файл.";
+            }
+        }
+
+        async function sortJson() {
+            const sortField = document.getElementById("sort_field").value;
+            const reverseSort = document.getElementById("reverse_sort").value === "yes";
+            const jsonData = JSON.parse(document.getElementById("contentDisplay").textContent);
+
+            // Логика сортировки (пример)
+            const sortedData = jsonData.sort((a, b) => {
+                if (reverseSort) {
+                    return b[sortField] < a[sortField] ? -1 : 1;
+                } else {
+                    return a[sortField] < b[sortField] ? -1 : 1;
+                }
+            });
+
+            document.getElementById("sortedContentDisplay").textContent = JSON.stringify(sortedData, null, 2);
+            document.getElementById("copySortedBtn").style.display = "block";
+            document.getElementById("result").textContent = "Сортировка завершена!";
+        }
+
+        function copyUploadedContent() {
+            const uploadedContent = document.getElementById("contentDisplay").textContent;
+            navigator.clipboard.writeText(uploadedContent).then(() => {
+                alert("Содержимое загруженного файла скопировано в буфер обмена!");
+            }).catch(err => {
+                console.error("Ошибка при копировании: ", err);
+            });
+        }
+
+        function copySortedContent() {
+            const sortedContent = document.getElementById("sortedContentDisplay").textContent;
+            navigator.clipboard.writeText(sortedContent).then(() => {
+                alert("Содержимое отсортированного файла скопировано в буфер обмена!");
+            }).catch(err => {
+                console.error("Ошибка при копировании: ", err);
+            });
+        }
+    </script>
 </body>
 </html>
