@@ -10,13 +10,13 @@
 
 #dropArea.bg-success {
     background-color: #28a745;
-}   
+}
 
 .btn.active {
-    background-color: #28a745; 
+    background-color: #28a745;
     color: white;
 }
 
 .btn.active:hover {
-    background-color: #25a049; 
+    background-color: #25a049;
 }
