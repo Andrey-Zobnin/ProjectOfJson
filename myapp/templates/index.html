@@ -8,15 +8,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         .copy-btn {
-            font-size: 0.8em; /* Меньший размер шрифта */
-            margin-bottom: 5px; /* Пробел ниже кнопки */
-            background-color: transparent; /* Прозрачный фон */
-            border: none; /* Без границы */
-            color: #007bff; /* Основной цвет Bootstrap */
-            cursor: pointer; /* Указатель курсора */
+            font-size: 0.8em; 
+            margin-bottom: 5px; 
+            background-color: transparent; 
+            border: none; 
+            color: #007bff; 
+            cursor: pointer; 
         }
         .copy-btn:hover {
-            text-decoration: underline; /* Подчеркивание при наведении */
+            text-decoration: underline; 
         }
     </style>
 </head>
@@ -74,68 +74,5 @@
     </div>
 
     <script src="{{ url_for('static', filename='Main.js') }}"></script>
-    <script>
-        // Новые функции для обработки загрузки файлов и сортировки
-        document.getElementById("fileInput").addEventListener("change", handleFileSelect);
-        document.getElementById("sortBtn").addEventListener("click", sortJson);
-        document.getElementById("copyUploadedBtn").addEventListener("click", copyUploadedContent);
-        document.getElementById("copySortedBtn").addEventListener("click", copySortedContent);
-
-        async function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (file && file.type === "application/json") {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    try {
-                        const jsonData = JSON.parse(e.target.result);
-                        document.getElementById("contentDisplay").textContent = JSON.stringify(jsonData, null, 2);
-                        document.getElementById("result").textContent = "Файл загружен успешно!";
-                    } catch (error) {
-                        document.getElementById("result").textContent = "Ошибка при чтении файла: " + error.message;
-                    }
-                };
-                reader.readAsText(file);
-            } else {
-                document.getElementById("result").textContent = "Пожалуйста, выберите корректный JSON-файл.";
-            }
-        }
-
-        async function sortJson() {
-            const sortField = document.getElementById("sort_field").value;
-            const reverseSort = document.getElementById("reverse_sort").value === "yes";
-            const jsonData = JSON.parse(document.getElementById("contentDisplay").textContent);
-
-            // Логика сортировки (пример)
-            const sortedData = jsonData.sort((a, b) => {
-                if (reverseSort) {
-                    return b[sortField] < a[sortField] ? -1 : 1;
-                } else {
-                    return a[sortField] < b[sortField] ? -1 : 1;
-                }
-            });
-
-            document.getElementById("sortedContentDisplay").textContent = JSON.stringify(sortedData, null, 2);
-            document.getElementById("copySortedBtn").style.display = "block";
-            document.getElementById("result").textContent = "Сортировка завершена!";
-        }
-
-        function copyUploadedContent() {
-            const uploadedContent = document.getElementById("contentDisplay").textContent;
-            navigator.clipboard.writeText(uploadedContent).then(() => {
-                alert("Содержимое загруженного файла скопировано в буфер обмена!");
-            }).catch(err => {
-                console.error("Ошибка при копировании: ", err);
-            });
-        }
-
-        function copySortedContent() {
-            const sortedContent = document.getElementById("sortedContentDisplay").textContent;
-            navigator.clipboard.writeText(sortedContent).then(() => {
-                alert("Содержимое отсортированного файла скопировано в буфер обмена!");
-            }).catch(err => {
-                console.error("Ошибка при копировании: ", err);
-            });
-        }
-    </script>
 </body>
 </html>
