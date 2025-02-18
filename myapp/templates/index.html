@@ -8,26 +8,37 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         .copy-btn {
-            font-size: 0.8em; 
-            margin-bottom: 5px; 
-            background-color: transparent; 
-            border: none; 
-            color: #007bff; 
-            cursor: pointer; 
+            font-size: 0.8em;
+            margin-bottom: 5px;
+            background-color: transparent;
+            border: none;
+            color: #007bff;
+            cursor: pointer;
         }
         .copy-btn:hover {
-            text-decoration: underline; 
+            text-decoration: underline;
+        }
+        .line-numbers {
+            counter-reset: line;
+            font-family: monospace;
+        }
+        .line-numbers div {
+            counter-increment: line;
+            padding-left: 30px;
+            position: relative;
+        }
+        .line-numbers div::before {
+            content: counter(line);
+            position: absolute;
+            left: 0;
+            color: #888;
+            width: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="text-center" id="title">Сортировщик JSON</h1>
-        <div class="text-right mb-3">
-            <select id="languageSelect" class="form-control" style="width: auto; display: inline;">
-                <option value="ru" selected>Русский</option>
-            </select>
-        </div>
         <div class="card">
             <div class="card-body">
                 <form id="sortForm">
@@ -61,12 +72,12 @@
                     <div class="col-md-6">
                         <h5 id="uploadedContentLabel">Содержимое загруженного файла:</h5>
                         <button type="button" class="copy-btn" id="copyUploadedBtn">Скопировать содержимое загруженного файла</button>
-                        <pre id="contentDisplay" style="border: 1px solid #ccc; padding: 10px;"></pre>
+                        <div id="contentDisplay" class="line-numbers" style="border: 1px solid #ccc; padding: 10px; max-height: 300px; overflow-y: auto;"></div>
                     </div>
                     <div class="col-md-6">
                         <h5 id="sortedContentLabel">Содержимое отсортированного файла:</h5>
                         <button type="button" class="copy-btn" id="copySortedBtn" style="display: none;">Скопировать содержимое отсортированного файла</button>
-                        <pre id="sortedContentDisplay" style="border: 1px solid #ccc; padding: 10px;"></pre>
+                        <div id="sortedContentDisplay" class="line-numbers" style="border: 1px solid #ccc; padding: 10px; max-height: 300px; overflow-y: auto;"></div>
                     </div>
                 </div>
             </div>
