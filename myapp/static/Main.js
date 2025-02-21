@@ -2,8 +2,47 @@ let jsonData = null;
 
 document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 document.getElementById("sortBtn").addEventListener("click", sortJson);
+document.getElementById("downloadUploadedBtn").addEventListener("click", downloadUploadedFile);
+document.getElementById("downloadSortedBtn").addEventListener("click", downloadSortedFile);
 
-async function handleFileSelect(event) {
+function downloadSortedFile() {
+    const sortedContent = document.getElementById("sortedContentDisplay").innerText;
+    if (!sortedContent) {
+        alert("Нет данных для скачивания.");
+        return;
+    }
+
+    const blob = new Blob([sortedContent], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "sorted_data.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+function downloadUploadedFile() {
+    if (!jsonData) {
+        alert("Нет данных для скачивания.");
+        return;
+    }
+
+    const jsonString = JSON.stringify(jsonData, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "uploaded_data.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+async function handleFileSelect(event) 
+{
     const file = event.target.files[0];
     if (file && file.type === "application/json") {
         const reader = new FileReader();
@@ -52,6 +91,7 @@ async function sortJson() {
         return;
     }
 
+
     const response = await fetch("/sort", {
         method: "POST",
         headers: {
@@ -65,12 +105,12 @@ async function sortJson() {
     });
 
     const result = await response.json();
-
     if (result.status === "error") {
         document.getElementById("result").textContent = result.message;
     } else {
         document.getElementById("sortedContentDisplay").innerHTML = formatJsonWithLineNumbers(result.sorted_data);
         document.getElementById("copySortedBtn").style.display = "block";
+        document.getElementById("downloadSortedBtn").style.display = "block"; 
         document.getElementById("result").textContent = "Сортировка завершена!";
     }
 }
