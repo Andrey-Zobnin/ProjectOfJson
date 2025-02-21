@@ -11,12 +11,13 @@
             font-size: 0.8em;
             margin-bottom: 5px;
             background-color: transparent;
-            border: none;
+            border: 1px solid #007bff; /* Добавлено для кнопок */
             color: #007bff;
             cursor: pointer;
         }
         .copy-btn:hover {
             text-decoration: underline;
+            background-color: #e7f1ff; /* Цвет при наведении */
         }
         .line-numbers {
             counter-reset: line;
@@ -71,12 +72,14 @@
                 <div class="row mt-3">
                     <div class="col-md-6">
                         <h5 id="uploadedContentLabel">Содержимое загруженного файла:</h5>
-                        <button type="button" class="copy-btn" id="copyUploadedBtn">Скопировать содержимое загруженного файла</button>
+                        <button type="button" class="copy-btn btn" id="copyUploadedBtn">Скопировать содержимое загруженного файла</button>
+                        <button type="button" class="copy-btn btn" id="downloadUploadedBtn">Скачать загруженный файл</button>
                         <div id="contentDisplay" class="line-numbers" style="border: 1px solid #ccc; padding: 10px; max-height: 300px; overflow-y: auto;"></div>
                     </div>
                     <div class="col-md-6">
                         <h5 id="sortedContentLabel">Содержимое отсортированного файла:</h5>
-                        <button type="button" class="copy-btn" id="copySortedBtn" style="display: none;">Скопировать содержимое отсортированного файла</button>
+                        <button type="button" class="copy-btn btn" id="copySortedBtn" style="display: none;">Скопировать содержимое отсортированного файла</button>
+                        <button type="button" class="copy-btn btn" id="downloadSortedBtn" style="display: none;">Скачать отсортированный файл</button>
                         <div id="sortedContentDisplay" class="line-numbers" style="border: 1px solid #ccc; padding: 10px; max-height: 300px; overflow-y: auto;"></div>
                     </div>
                 </div>
