@@ -1,5 +1,10 @@
 let jsonData = null;
 
+document.getElementById("copyUploadedBtn").style.display = "none";
+document.getElementById("downloadUploadedBtn").style.display = "none";
+document.getElementById("copySortedBtn").style.display = "none";
+document.getElementById("downloadSortedBtn").style.display = "none";
+
 document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 document.getElementById("sortBtn").addEventListener("click", sortJson);
 document.getElementById("downloadUploadedBtn").addEventListener("click", downloadUploadedFile);
@@ -23,6 +28,7 @@ function downloadSortedFile() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
+
 function downloadUploadedFile() {
     if (!jsonData) {
         alert("Нет данных для скачивания.");
@@ -41,8 +47,8 @@ function downloadUploadedFile() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
-async function handleFileSelect(event) 
-{
+
+async function handleFileSelect(event) {
     const file = event.target.files[0];
     if (file && file.type === "application/json") {
         const reader = new FileReader();
@@ -52,6 +58,10 @@ async function handleFileSelect(event)
                 document.getElementById("contentDisplay").innerHTML = formatJsonWithLineNumbers(jsonData);
                 document.getElementById("result").textContent = "Файл загружен успешно!";
                 updateSortFieldOptions(jsonData);
+
+                // Показываем кнопки после успешной загрузки файла
+                document.getElementById("copyUploadedBtn").style.display = "block";
+                document.getElementById("downloadUploadedBtn").style.display = "block";
             } catch (error) {
                 document.getElementById("result").textContent = "Ошибка при чтении файла: " + error.message;
             }
@@ -90,7 +100,6 @@ async function sortJson() {
         document.getElementById("result").textContent = "Пожалуйста, загрузите JSON-файл сначала.";
         return;
     }
-
 
     const response = await fetch("/sort", {
         method: "POST",
