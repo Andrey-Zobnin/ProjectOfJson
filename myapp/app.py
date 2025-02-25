@@ -51,6 +51,6 @@ def sort():
     sorter.write_to_file(sorted_filename)
 
     return jsonify({"status": "success", "sorted_file": sorted_filename, "sorted_data": sorter.data})
-
+# Run the Flask app in debug mode (for development) or in production mode (for production)
 if __name__ == "__main__":
     app.run(debug=True)
