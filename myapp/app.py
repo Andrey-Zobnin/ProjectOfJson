@@ -2,10 +2,12 @@ import os
 from flask import Flask, render_template, request, jsonify
 import json
 
+# пулл приложухи на основе Flask
 app = Flask(__name__)
 
 class Sorter:
     def __init__(self):
+        
         self.data = None
 
     def set_data(self, data):
