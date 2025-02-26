@@ -10,6 +10,17 @@ document.getElementById("sortBtn").addEventListener("click", sortJson);
 document.getElementById("downloadUploadedBtn").addEventListener("click", downloadUploadedFile);
 document.getElementById("downloadSortedBtn").addEventListener("click", downloadSortedFile);
 
+// Управление отображением поля ввода значения
+document.getElementById("reverse_sort").addEventListener("change", function() {
+    const valueInputGroup = document.getElementById("valueInputGroup");
+    if (this.value === "value") {
+        valueInputGroup.style.display = "block"; // Показываем поле для ввода значения
+    } else {
+        valueInputGroup.style.display = "none"; // Скрываем поле для ввода значения
+        document.getElementById("sort_value").value = ""; // Очищаем поле
+    }
+});
+
 // Функция для скачивания отсортированного файла
 function downloadSortedFile() {
     const sortedContent = document.getElementById("sortedContentDisplay").innerText;
@@ -28,17 +39,6 @@ function downloadSortedFile() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
-
-// Управление отображением поля ввода значения
-document.getElementById("reverse_sort").addEventListener("change", function() {
-    const valueInputGroup = document.getElementById("valueInputGroup");
-    if (this.value === "value") {
-        valueInputGroup.style.display = "block"; // Показываем поле для ввода значения
-    } else {
-        valueInputGroup.style.display = "none"; // Скрываем поле для ввода значения
-        document.getElementById("sort_value").value = ""; // Очищаем поле
-    }
-});
 
 // Функция для скачивания загруженного файла
 function downloadUploadedFile() {
@@ -74,6 +74,12 @@ async function handleFileSelect(event) {
 
                 document.getElementById("copyUploadedBtn").style.display = "block";
                 document.getElementById("downloadUploadedBtn").style.display = "block";
+
+                // Проверяем, если параметр сортировки уже выбран
+                const sortSelect = document.getElementById("reverse_sort");
+                if (sortSelect.value === "value") {
+                    document.getElementById("valueInputGroup").style.display = "block"; // Показываем поле для ввода значения
+                }
             } catch (error) {
                 document.getElementById("result").textContent = "Ошибка при чтении файла: " + error.message;
             }
