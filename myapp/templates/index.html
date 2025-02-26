@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Сортировщик JSON</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сортировщик JSON</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 <body>
     <div class="container mt-5">
         <h1 class="text-center" id="title">Сортировщик JSON</h1>
@@ -26,20 +26,21 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="sort_value" id="sortValueLabel">Введите значение для сортировки:</label>
-                        <input type="text" class="form-control" id="sort_value" name="sort_value" required>
-                    </div>
-                    <div class="form-group">
                         <label id="sortByLabel">Сортировать по:</label>
                         <select class="form-control" id="reverse_sort" name="reverse_sort">
                             <option value="no">По возрастанию</option>
                             <option value="yes">По убыванию</option>
+                            <option value="value">По значению</option> <!-- Добавлено значение для сортировки -->
                         </select>
+                    </div>
+                    <div class="form-group" id="valueInputGroup" style="display: none;">
+                        <label for="sort_value" id="sortValueLabel">Введите значение для сортировки:</label>
+                        <input type="text" class="form-control" id="sort_value" name="sort_value">
                     </div>
                     <button type="button" class="btn btn-primary" id="sortBtn">Сортировать</button>
                     <button type="button" class="btn btn-success" id="downloadBtn" style="display: none;">Скачать отсортированный файл</button>
                 </form>
-                <p id="result" class="mt-3 success-message" style="display: none;">Сортировка завершена</p> <!-- Добавлен класс для зеленого текста -->
+                <p id="result" class="mt-3 success-message" style="display: none;">Сортировка завершена</p>
                 <div id="progress" class="mt-3" style="display: none;">
                     <p>Сортировка в процессе: <span id="progressText">Загрузка...</span></p>
                 </div>
@@ -60,7 +61,6 @@
             </div>
         </div>
     </div>
-
     <script src="{{ url_for('static', filename='Main.js') }}"></script>
 </body>
 </html>
