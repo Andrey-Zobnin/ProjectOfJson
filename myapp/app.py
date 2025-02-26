@@ -45,19 +45,16 @@ def sort():
     sorter = Sorter()
     sorter.set_data(json_data)
 
-    # Сортировка по значению
+    # Если указано значение для сортировки, фильтруем данные
     if sort_value:
-        sorter.data = [item for item in sorter.data if item.get(sort_field) == sort_value]
-    
+        sorter.data = [item for item in sorter.data if str(item.get(sort_field)) == str(sort_value)]
+
     sort_result = sorter.sort(sort_field, reverse_sort)
 
     if isinstance(sort_result, dict) and "error" in sort_result:
         return jsonify({"status": "error", "message": sort_result["error"]})
     
-    sorted_filename = os.path.join(os.getcwd(), "sorted_data.json")  
-    sorter.write_to_file(sorted_filename)
-
-    return jsonify({"status": "success", "sorted_file": sorted_filename, "sorted_data": sorter.data})
+    return jsonify({"status": "success", "sorted_data": sorter.data})
 
 if __name__ == "__main__":
     app.run(debug=True)
