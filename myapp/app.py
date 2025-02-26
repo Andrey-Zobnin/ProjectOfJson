@@ -7,10 +7,11 @@ app = Flask(__name__)
 
 class Sorter:
     def __init__(self):
-        
+        # init the default
         self.data = None
 
     def set_data(self, data):
+        # set the data to the default data
         self.data = data
 
     def sort(self, field=None, reverse=False):
@@ -36,11 +37,8 @@ def index():
 
 @app.route("/sort", methods=["POST"])
 def sort():
-    data = request.json
-    sort_field = data.get("sort_field")
-    reverse_sort = data.get("reverse_sort") == "yes"
-    json_data = data.get("json_data")
-
+    # with question for 4 different values
+    data, sort_field, reverse_sort, json_data = request.json, data.get("sort_field"), data.get("reverse_sort") == "yes", data.get("json_data"),
     sorter = Sorter()
     sorter.set_data(json_data)
 
