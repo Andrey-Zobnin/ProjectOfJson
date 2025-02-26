@@ -72,6 +72,9 @@ async function handleFileSelect(event) {
                 document.getElementById("result").textContent = "Файл загружен успешно!";
                 updateSortFieldOptions(jsonData);
 
+                // Отображаем информацию о загруженном файле
+                displayFileInfo(file, jsonData.length);
+
                 document.getElementById("copyUploadedBtn").style.display = "block";
                 document.getElementById("downloadUploadedBtn").style.display = "block";
 
@@ -88,6 +91,13 @@ async function handleFileSelect(event) {
     } else {
         document.getElementById("result").textContent = "Пожалуйста, выберите корректный JSON-файл.";
     }
+}
+
+// Функция для отображения информации о файле
+function displayFileInfo(file, lineCount) {
+    const uploadedFileInfo = document.getElementById("uploadedFileInfo");
+    const fileSize = (file.size / 1024).toFixed(2); // Размер в КБ
+    uploadedFileInfo.textContent = `Количество строк: ${lineCount}, Размер файла: ${fileSize} КБ`;
 }
 
 // Функция для форматирования JSON с номерами строк
@@ -150,6 +160,12 @@ async function sortJson() {
         document.getElementById("copySortedBtn").style.display = "block";
         document.getElementById("downloadSortedBtn").style.display = "block"; 
         document.getElementById("result").textContent = "Сортировка завершена!";
+
+        // add downloaded file size and line count 
+        const sortedFileSize = new Blob([JSON.stringify(result.sorted_data)]).size; // Размер отсортированных данных
+        const sortedLineCount = result.sorted_data.length; // Количество строк
+        const sortedFileInfo = document.getElementById("sortedFileInfo");
+        sortedFileInfo.textContent = `Количество строк: ${sortedLineCount}, Размер файла: ${(sortedFileSize / 1024).toFixed(2)} КБ`;
     }
 }
 
@@ -175,4 +191,4 @@ function copySortedContent() {
     }).catch(err => {
         console.error("Ошибка при копировании: ", err);
     });
-}
+}     
