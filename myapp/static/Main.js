@@ -10,20 +10,29 @@ document.getElementById("sortBtn").addEventListener("click", sortJson);
 document.getElementById("downloadUploadedBtn").addEventListener("click", downloadUploadedFile);
 document.getElementById("downloadSortedBtn").addEventListener("click", downloadSortedFile);
 
+// Управление отображением поля ввода значения
+document.getElementById("reverse_sort").addEventListener("change", function() {
+    const valueInputGroup = document.getElementById("valueInputGroup");
+    if (this.value === "value") {
+        valueInputGroup.style.display = "block"; // Показываем поле для ввода значения
+    } else {
+        valueInputGroup.style.display = "none"; // Скрываем поле для ввода значения
+        document.getElementById("sort_value").value = ""; // Очищаем поле
+    }
+});
+
+// Функция для скачивания отсортированного файла
 function downloadSortedFile() {
     const sortedContent = document.getElementById("sortedContentDisplay").innerText;
     if (!sortedContent) {
         alert("Нет данных для скачивания.");
         return;
     }
-    // const blob = new Blob([sortedContent], { type: "application/json" });
-
     const blob = new Blob([sortedContent], { type: "application/json" });
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement("a");
     a.href = url;
-    // a.download = "sorted_data_with.json";
     a.download = "sorted_data.json";
     document.body.appendChild(a);
     a.click();
@@ -31,21 +40,17 @@ function downloadSortedFile() {
     URL.revokeObjectURL(url);
 }
 
+// Функция для скачивания загруженного файла
 function downloadUploadedFile() {
-    if (!jsonData) 
-    {
+    if (!jsonData) {
         alert("Нет загруженного файла.");
-        // return 0; нельзя завершать программу до того, как данные будут загружены
-        alert("Нет данных для скачивания.");
         return;
     }
-    // константы для вывода на экран
 
     const jsonString = JSON.stringify(jsonData, null, 2);
     const blob = new Blob([jsonString], { type: "application/json" });
     const url = URL.createObjectURL(blob);
 
-    // Создаем ссылку для скачивания
     const a = document.createElement("a");
     a.href = url;
     a.download = "uploaded_data.json";
@@ -55,8 +60,7 @@ function downloadUploadedFile() {
     URL.revokeObjectURL(url);
 }
 
-// Обновляем список полей для сортировки
-
+// Функция для обработки выбора файла
 async function handleFileSelect(event) {
     const file = event.target.files[0];
     if (file && file.type === "application/json") {
@@ -68,26 +72,31 @@ async function handleFileSelect(event) {
                 document.getElementById("result").textContent = "Файл загружен успешно!";
                 updateSortFieldOptions(jsonData);
 
-                // Показываем кнопки после успешной загрузки файла
                 document.getElementById("copyUploadedBtn").style.display = "block";
                 document.getElementById("downloadUploadedBtn").style.display = "block";
+
+                // Проверяем, если параметр сортировки уже выбран
+                const sortSelect = document.getElementById("reverse_sort");
+                if (sortSelect.value === "value") {
+                    document.getElementById("valueInputGroup").style.display = "block"; // Показываем поле для ввода значения
+                }
             } catch (error) {
-                // Отображаем ошибку при чтении файла
                 document.getElementById("result").textContent = "Ошибка при чтении файла: " + error.message;
             }
         };
         reader.readAsText(file);
     } else {
-        // Отображаем пользователю все что нужно сделать при выборе файла
         document.getElementById("result").textContent = "Пожалуйста, выберите корректный JSON-файл.";
     }
 }
 
+// Функция для форматирования JSON с номерами строк
 function formatJsonWithLineNumbers(data) {
     const jsonString = JSON.stringify(data, null, 2);
     return jsonString.split('\n').map(line => `<div>${line}</div>`).join('');
 }
 
+// Функция для обновления опций сортировки
 function updateSortFieldOptions(data) {
     const sortFieldSelect = document.getElementById("sort_field");
     sortFieldSelect.innerHTML = "";
@@ -103,8 +112,10 @@ function updateSortFieldOptions(data) {
     }
 }
 
+// Функция для сортировки JSON
 async function sortJson() {
     const sortField = document.getElementById("sort_field").value;
+    const sortValue = document.getElementById("sort_value").value; // Получаем значение
     const reverseSort = document.getElementById("reverse_sort").value === "yes";
 
     if (!jsonData || jsonData.length === 0) {
@@ -112,16 +123,23 @@ async function sortJson() {
         return;
     }
 
+    const requestBody = {
+        json_data: jsonData,
+        sort_field: sortField,
+        reverse_sort: reverseSort ? "yes" : "no"
+    };
+
+    // Если выбрана сортировка по значению, добавляем значение в запрос
+    if (document.getElementById("reverse_sort").value === "value") {
+        requestBody.sort_value = sortValue; // Добавляем значение для сортировки
+    }
+
     const response = await fetch("/sort", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            json_data: jsonData,
-            sort_field: sortField,
-            reverse_sort: reverseSort ? "yes" : "no"
-        })
+        body: JSON.stringify(requestBody)
     });
 
     const result = await response.json();
@@ -135,9 +153,11 @@ async function sortJson() {
     }
 }
 
+// Обработчики событий для копирования содержимого
 document.getElementById("copyUploadedBtn").addEventListener("click", copyUploadedContent);
 document.getElementById("copySortedBtn").addEventListener("click", copySortedContent);
 
+// Функция для копирования содержимого загруженного файла
 function copyUploadedContent() {
     const uploadedContent = document.getElementById("contentDisplay").innerText;
     navigator.clipboard.writeText(uploadedContent).then(() => {
@@ -147,6 +167,7 @@ function copyUploadedContent() {
     });
 }
 
+// Функция для копирования содержимого отсортированного файла
 function copySortedContent() {
     const sortedContent = document.getElementById("sortedContentDisplay").innerText;
     navigator.clipboard.writeText(sortedContent).then(() => {

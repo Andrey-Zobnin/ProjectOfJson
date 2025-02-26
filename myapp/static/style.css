@@ -20,3 +20,39 @@
 .btn.active:hover {
     background-color: #25a049;
 }
+.copy-btn {
+    font-size: 0.8em;
+    margin-bottom: 5px;
+    background-color: transparent;
+    border: 1px solid #007bff; /* Добавлено для кнопок */
+    color: #007bff;
+    cursor: pointer;
+}
+
+.copy-btn:hover {
+    text-decoration: underline;
+    background-color: #e7f1ff; /* Цвет при наведении */
+}
+
+.line-numbers {
+    counter-reset: line;
+    font-family: monospace;
+}
+
+.line-numbers div {
+    counter-increment: line;
+    padding-left: 30px;
+    position: relative;
+}
+
+.line-numbers div::before {
+    content: counter(line);
+    position: absolute;
+    left: 0;
+    color: #888;
+    width: 20px;
+}
+
+.success-message {
+    color: green; 
+}
