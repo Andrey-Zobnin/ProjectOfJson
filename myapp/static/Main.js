@@ -16,14 +16,11 @@ function downloadSortedFile() {
         alert("Нет данных для скачивания.");
         return;
     }
-    // const blob = new Blob([sortedContent], { type: "application/json" });
-
     const blob = new Blob([sortedContent], { type: "application/json" });
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement("a");
     a.href = url;
-    // a.download = "sorted_data_with.json";
     a.download = "sorted_data.json";
     document.body.appendChild(a);
     a.click();
@@ -32,20 +29,15 @@ function downloadSortedFile() {
 }
 
 function downloadUploadedFile() {
-    if (!jsonData) 
-    {
+    if (!jsonData) {
         alert("Нет загруженного файла.");
-        // return 0; нельзя завершать программу до того, как данные будут загружены
-        alert("Нет данных для скачивания.");
         return;
     }
-    // константы для вывода на экран
 
     const jsonString = JSON.stringify(jsonData, null, 2);
     const blob = new Blob([jsonString], { type: "application/json" });
     const url = URL.createObjectURL(blob);
 
-    // Создаем ссылку для скачивания
     const a = document.createElement("a");
     a.href = url;
     a.download = "uploaded_data.json";
@@ -54,8 +46,6 @@ function downloadUploadedFile() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
-
-// Обновляем список полей для сортировки
 
 async function handleFileSelect(event) {
     const file = event.target.files[0];
@@ -68,17 +58,14 @@ async function handleFileSelect(event) {
                 document.getElementById("result").textContent = "Файл загружен успешно!";
                 updateSortFieldOptions(jsonData);
 
-                // Показываем кнопки после успешной загрузки файла
                 document.getElementById("copyUploadedBtn").style.display = "block";
                 document.getElementById("downloadUploadedBtn").style.display = "block";
             } catch (error) {
-                // Отображаем ошибку при чтении файла
                 document.getElementById("result").textContent = "Ошибка при чтении файла: " + error.message;
             }
         };
         reader.readAsText(file);
     } else {
-        // Отображаем пользователю все что нужно сделать при выборе файла
         document.getElementById("result").textContent = "Пожалуйста, выберите корректный JSON-файл.";
     }
 }
@@ -105,6 +92,7 @@ function updateSortFieldOptions(data) {
 
 async function sortJson() {
     const sortField = document.getElementById("sort_field").value;
+    const sortValue = document.getElementById("sort_value").value; // Получаем значение
     const reverseSort = document.getElementById("reverse_sort").value === "yes";
 
     if (!jsonData || jsonData.length === 0) {
@@ -120,6 +108,7 @@ async function sortJson() {
         body: JSON.stringify({
             json_data: jsonData,
             sort_field: sortField,
+            sort_value: sortValue, // Добавляем значение для сортировки
             reverse_sort: reverseSort ? "yes" : "no"
         })
     });
