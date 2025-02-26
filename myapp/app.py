@@ -25,9 +25,9 @@ class Sorter:
             return {"error": f"Поле '{field}' не найдено в данных."}
         except TypeError as e:
             return {"error": f"Ошибка при сортировке: {e}"}
-def write_to_file(self, filename):
-    with open(filename, 'w', encoding='utf-8') as f:
-        json.dump(self.data, f, ensure_ascii=False, indent=4)
+    def write_to_file(self, filename):
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(self.data, f, ensure_ascii=False, indent=4)
 
 @app.route("/")
 def index():
