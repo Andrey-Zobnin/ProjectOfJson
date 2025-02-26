@@ -25,7 +25,6 @@ document.getElementById("convertCsvToJsonBtn").addEventListener("click", () => {
     document.getElementById("conversionFileInput").accept = ".csv";
     document.getElementById("convertBtn").style.display = "block";
 });
-
 document.getElementById("convertBtn").addEventListener("click", convertFile);
 
 function downloadSortedFile() {
