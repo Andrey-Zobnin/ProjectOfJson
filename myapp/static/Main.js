@@ -6,9 +6,10 @@ document.getElementById("copyUploadedBtn").style.display = "none";
 document.getElementById("downloadUploadedBtn").style.display = "none";
 document.getElementById("copySortedBtn").style.display = "none";
 document.getElementById("downloadSortedBtn").style.display = "none";
-document.getElementById("convertJsonToCsvBtn").style.display = "none"; // Скрываем кнопку конвертации в CSV
-document.getElementById("downloadConvertedBtn").style.display = "none"; // Скрываем кнопку скачивания конвертированного файла
-document.getElementById("copyConvertedBtn").style.display = "none"; // Скрываем кнопку копирования конвертированного файла
+document.getElementById("convertJsonToCsvBtn").style.display = "none";
+document.getElementById("downloadConvertedBtn").style.display = "none";
+document.getElementById("copyConvertedBtn").style.display = "none";
+
 document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 document.getElementById("sortBtn").addEventListener("click", sortJson);
 document.getElementById("downloadUploadedBtn").addEventListener("click", downloadUploadedFile);
@@ -16,18 +17,17 @@ document.getElementById("downloadSortedBtn").addEventListener("click", downloadS
 document.getElementById("csvFileInput").addEventListener("change", handleCsvFileSelect);
 document.getElementById("convertCsvToJsonBtn").addEventListener("click", convertCsvToJson);
 document.getElementById("convertJsonToCsvBtn").addEventListener("click", convertJsonToCsv);
-// Управление отображением поля ввода значения
+
 document.getElementById("reverse_sort").addEventListener("change", function() {
     const valueInputGroup = document.getElementById("valueInputGroup");
     if (this.value === "value") {
-        valueInputGroup.style.display = "block"; // Показываем поле для ввода значения
+        valueInputGroup.style.display = "block";
     } else {
-        valueInputGroup.style.display = "none"; // Скрываем поле для ввода значения
-        document.getElementById("sort_value").value = ""; // Очищаем поле
+        valueInputGroup.style.display = "none";
+        document.getElementById("sort_value").value = "";
     }
 });
 
-// Функция для скачивания отсортированного файла
 function downloadSortedFile() {
     const sortedContent = document.getElementById("sortedContentDisplay").innerText;
     if (!sortedContent) {
@@ -46,7 +46,6 @@ function downloadSortedFile() {
     URL.revokeObjectURL(url);
 }
 
-// Функция для скачивания загруженного файла
 function downloadUploadedFile() {
     if (!jsonData) {
         alert("Нет загруженного файла.");
@@ -66,7 +65,6 @@ function downloadUploadedFile() {
     URL.revokeObjectURL(url);
 }
 
-// Функция для обработки выбора файла
 async function handleFileSelect(event) {
     const file = event.target.files[0];
     if (file && file.type === "application/json") {
@@ -77,18 +75,8 @@ async function handleFileSelect(event) {
                 document.getElementById("contentDisplay").innerHTML = formatJsonWithLineNumbers(jsonData);
                 document.getElementById("result").textContent = "Файл загружен успешно!";
                 updateSortFieldOptions(jsonData);
-
-                // Отображаем информацию о загруженном файле
                 displayFileInfo(file, jsonData.length);
-
-                document.getElementById("copyUploadedBtn").style.display = "block";
-                document.getElementById("downloadUploadedBtn").style.display = "block";
-
-                // Проверяем, если параметр сортировки уже выбран
-                const sortSelect = document.getElementById("reverse_sort");
-                if (sortSelect.value === "value") {
-                    document.getElementById("valueInputGroup").style.display = "block"; // Показываем поле для ввода значения
-                }
+                document.getElementById("convertJsonToCsvBtn").style.display = "block";
             } catch (error) {
                 document.getElementById("result").textContent = "Ошибка при чтении файла: " + error.message;
             }
@@ -99,87 +87,115 @@ async function handleFileSelect(event) {
     }
 }
 
-// Функция для отображения информации о файле
-function displayFileInfo(file, lineCount) {
-    const uploadedFileInfo = document.getElementById("uploadedFileInfo");
-    const fileSize = (file.size / 1024).toFixed(2); // Размер в КБ
-    uploadedFileInfo.textContent = `Количество строк: ${lineCount}, Размер файла: ${fileSize} КБ`;
+function handleCsvFileSelect(event) {
+    const file = event.target.files[0];
+    if (file && file.type === "text/csv") {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            csvData = e.target.result;
+            document.getElementById("conversionResultDisplay").innerText = csvData;
+        };
+        reader.readAsText(file);
+    } else {
+        alert("Пожалуйста, выберите корректный CSV-файл.");
+    }
 }
 
-// Функция для форматирования JSON с номерами строк
+function convertJsonToCsv() {
+    if (!jsonData) {
+        alert("Сначала загрузите JSON-файл.");
+        return;
+    }
+
+    const csv = jsonToCsv(jsonData);
+    document.getElementById("conversionResultDisplay").innerText = csv;
+    downloadCsv(csv, "converted_data.csv");
+
+    const convertedFileSize = (new Blob([csv]).size / 1024).toFixed(2);
+    const convertedLineCount = csv.split('\n').length;
+    const convertedFileInfo = document.getElementById("convertedFileInfo");
+    convertedFileInfo.textContent = `Количество строк: ${convertedLineCount}, Размер файла: ${convertedFileSize} КБ`;
+
+    document.getElementById("downloadConvertedBtn").style.display = "block";
+    document.getElementById("copyConvertedBtn").style.display = "block";
+}
+
+function convertCsvToJson() {
+    if (!csvData) {
+        alert("Сначала загрузите CSV-файл.");
+        return;
+    }
+
+    const json = csvToJson(csvData);
+    document.getElementById("conversionResultDisplay").innerHTML = formatJsonWithLineNumbers(json);
+
+    const convertedFileSize = (new Blob([JSON.stringify(json)]).size / 1024).toFixed(2);
+    const convertedLineCount = json.length;
+    const convertedFileInfo = document.getElementById("convertedFileInfo");
+    convertedFileInfo.textContent = `Количество строк: ${convertedLineCount}, Размер файла: ${convertedFileSize} КБ`;
+
+    document.getElementById("downloadConvertedBtn").style.display = "none";
+    document.getElementById("copyConvertedBtn").style.display = "none";
+}
+
+function jsonToCsv(json) {
+    const rows = [];
+    const headers = Object.keys(json[0]);
+    rows.push(headers.join(','));
+
+    for (const item of json) {
+        const values = headers.map(header => item[header]);
+        rows.push(values.join(','));
+    }
+
+    return rows.join('\n');
+}
+
+function csvToJson(csv) {
+    const lines = csv.split('\n');
+    const headers = lines[0].split(',');
+    const result = [];
+
+    for (let i = 1; i < lines.length; i++) {
+        const obj = {};
+        const currentLine = lines[i].split(',');
+
+        for (let j = 0; j < headers.length; j++) {
+            obj[headers[j]] = currentLine[j];
+        }
+
+        result.push(obj);
+    }
+
+    return result;
+}
+
+function downloadCsv(csv, filename) {
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.setAttribute('download', filename);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
 function formatJsonWithLineNumbers(data) {
     const jsonString = JSON.stringify(data, null, 2);
     return jsonString.split('\n').map(line => `<div>${line}</div>`).join('');
 }
 
-// Функция для обновления опций сортировки
-function updateSortFieldOptions(data) {
-    const sortFieldSelect = document.getElementById("sort_field");
-    sortFieldSelect.innerHTML = "";
-
-    if (data.length > 0) {
-        const fields = Object.keys(data[0]);
-        fields.forEach(field => {
-            const option = document.createElement("option");
-            option.value = field;
-            option.textContent = field;
-            sortFieldSelect.appendChild(option);
-        });
-    }
+function displayFileInfo(file, lineCount) {
+    const uploadedFileInfo = document.getElementById("uploadedFileInfo");
+    const fileSize = (file.size / 1024).toFixed(2);
+    uploadedFileInfo.textContent = `Количество строк: ${lineCount}, Размер файла: ${fileSize} КБ`;
 }
 
-// Функция для сортировки JSON
-async function sortJson() {
-    const sortField = document.getElementById("sort_field").value;
-    const sortValue = document.getElementById("sort_value").value; // Получаем значение
-    const reverseSort = document.getElementById("reverse_sort").value === "yes";
-
-    if (!jsonData || jsonData.length === 0) {
-        document.getElementById("result").textContent = "Пожалуйста, загрузите JSON-файл сначала.";
-        return;
-    }
-
-    const requestBody = {
-        json_data: jsonData,
-        sort_field: sortField,
-        reverse_sort: reverseSort ? "yes" : "no"
-    };
-
-    // Если выбрана сортировка по значению, добавляем значение в запрос
-    if (document.getElementById("reverse_sort").value === "value") {
-        requestBody.sort_value = sortValue; // Добавляем значение для сортировки
-    }
-
-    const response = await fetch("/sort", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(requestBody)
-    });
-
-    const result = await response.json();
-    if (result.status === "error") {
-        document.getElementById("result").textContent = result.message;
-    } else {
-        document.getElementById("sortedContentDisplay").innerHTML = formatJsonWithLineNumbers(result.sorted_data);
-        document.getElementById("copySortedBtn").style.display = "block";
-        document.getElementById("downloadSortedBtn").style.display = "block"; 
-        document.getElementById("result").textContent = "Сортировка завершена!";
-
-        // add downloaded file size and line count 
-        const sortedFileSize = new Blob([JSON.stringify(result.sorted_data)]).size; // Размер отсортированных данных
-        const sortedLineCount = result.sorted_data.length; // Количество строк
-        const sortedFileInfo = document.getElementById("sortedFileInfo");
-        sortedFileInfo.textContent = `Количество строк: ${sortedLineCount}, Размер файла: ${(sortedFileSize / 1024).toFixed(2)} КБ`;
-    }
-}
-
-// Обработчики событий для копирования содержимого
 document.getElementById("copyUploadedBtn").addEventListener("click", copyUploadedContent);
 document.getElementById("copySortedBtn").addEventListener("click", copySortedContent);
+document.getElementById("copyConvertedBtn").addEventListener("click", copyConvertedContent);
 
-// Функция для копирования содержимого загруженного файла
 function copyUploadedContent() {
     const uploadedContent = document.getElementById("contentDisplay").innerText;
     navigator.clipboard.writeText(uploadedContent).then(() => {
@@ -189,7 +205,6 @@ function copyUploadedContent() {
     });
 }
 
-// Функция для копирования содержимого отсортированного файла
 function copySortedContent() {
     const sortedContent = document.getElementById("sortedContentDisplay").innerText;
     navigator.clipboard.writeText(sortedContent).then(() => {
@@ -197,4 +212,13 @@ function copySortedContent() {
     }).catch(err => {
         console.error("Ошибка при копировании: ", err);
     });
-}     
+}
+
+function copyConvertedContent() {
+    const convertedContent = document.getElementById("conversionResultDisplay").innerText;
+    navigator.clipboard.writeText(convertedContent).then(() => {
+        alert("Содержимое конвертированного файла скопировано в буфер обмена!");
+    }).catch(err => {
+        console.error("Ошибка при копировании: ", err);
+    });
+}
