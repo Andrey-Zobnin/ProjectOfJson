@@ -1,4 +1,6 @@
 let jsonData = null;
+let csvData = null;
+let convertedData = null;
 
 document.getElementById("copyUploadedBtn").style.display = "none";
 document.getElementById("downloadUploadedBtn").style.display = "none";
