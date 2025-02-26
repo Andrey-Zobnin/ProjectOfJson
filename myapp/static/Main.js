@@ -6,12 +6,16 @@ document.getElementById("copyUploadedBtn").style.display = "none";
 document.getElementById("downloadUploadedBtn").style.display = "none";
 document.getElementById("copySortedBtn").style.display = "none";
 document.getElementById("downloadSortedBtn").style.display = "none";
-
+document.getElementById("convertJsonToCsvBtn").style.display = "none"; // Скрываем кнопку конвертации в CSV
+document.getElementById("downloadConvertedBtn").style.display = "none"; // Скрываем кнопку скачивания конвертированного файла
+document.getElementById("copyConvertedBtn").style.display = "none"; // Скрываем кнопку копирования конвертированного файла
 document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 document.getElementById("sortBtn").addEventListener("click", sortJson);
 document.getElementById("downloadUploadedBtn").addEventListener("click", downloadUploadedFile);
 document.getElementById("downloadSortedBtn").addEventListener("click", downloadSortedFile);
-
+document.getElementById("csvFileInput").addEventListener("change", handleCsvFileSelect);
+document.getElementById("convertCsvToJsonBtn").addEventListener("click", convertCsvToJson);
+document.getElementById("convertJsonToCsvBtn").addEventListener("click", convertJsonToCsv);
 // Управление отображением поля ввода значения
 document.getElementById("reverse_sort").addEventListener("change", function() {
     const valueInputGroup = document.getElementById("valueInputGroup");
