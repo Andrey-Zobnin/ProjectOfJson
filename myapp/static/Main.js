@@ -119,17 +119,23 @@ async function sortJson() {
         return;
     }
 
+    const requestBody = {
+        json_data: jsonData,
+        sort_field: sortField,
+        reverse_sort: reverseSort ? "yes" : "no"
+    };
+
+    // Если выбрана сортировка по значению, добавляем значение в запрос
+    if (document.getElementById("reverse_sort").value === "value") {
+        requestBody.sort_value = sortValue; // Добавляем значение для сортировки
+    }
+
     const response = await fetch("/sort", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            json_data: jsonData,
-            sort_field: sortField,
-            sort_value: sortValue, // Добавляем значение для сортировки
-            reverse_sort: reverseSort ? "yes" : "no"
-        })
+        body: JSON.stringify(requestBody)
     });
 
     const result = await response.json();
@@ -141,9 +147,14 @@ async function sortJson() {
         document.getElementById("downloadSortedBtn").style.display = "block"; 
         document.getElementById("result").textContent = "Сортировка завершена!";
     }
-}
+}ementById("reverse_sort").value === "yes";
 
-// Обработчики событий для копирования содержимого
+    if (!jsonData || jsonData.length === 0) {
+        document.getElementById("result").textContent = "Пожалуйста, загрузите JSON-файл сначала.";
+        return;
+    }
+
+    // Обработчики событий для копирования содержимого
 document.getElementById("copyUploadedBtn").addEventListener("click", copyUploadedContent);
 document.getElementById("copySortedBtn").addEventListener("click", copySortedContent);
 
