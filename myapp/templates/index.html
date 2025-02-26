@@ -1,45 +1,12 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сортировщик JSON</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        .copy-btn {
-            font-size: 0.8em;
-            margin-bottom: 5px;
-            background-color: transparent;
-            border: 1px solid #007bff; /* Добавлено для кнопок */
-            color: #007bff;
-            cursor: pointer;
-        }
-        .copy-btn:hover {
-            text-decoration: underline;
-            background-color: #e7f1ff; /* Цвет при наведении */
-        }
-        .line-numbers {
-            counter-reset: line;
-            font-family: monospace;
-        }
-        .line-numbers div {
-            counter-increment: line;
-            padding-left: 30px;
-            position: relative;
-        }
-        .line-numbers div::before {
-            content: counter(line);
-            position: absolute;
-            left: 0;
-            color: #888;
-            width: 20px;
-        }
-        .success-message {
-            color: green; 
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Сортировщик JSON</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
 <body>
     <div class="container mt-5">
         <h1 class="text-center" id="title">Сортировщик JSON</h1>
@@ -57,6 +24,10 @@
                         <select class="form-control" id="sort_field" name="sort_field" required>
                             <option value="">Выберите поле</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sort_value" id="sortValueLabel">Введите значение для сортировки:</label>
+                        <input type="text" class="form-control" id="sort_value" name="sort_value" required>
                     </div>
                     <div class="form-group">
                         <label id="sortByLabel">Сортировать по:</label>
