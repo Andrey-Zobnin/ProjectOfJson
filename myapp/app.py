@@ -17,7 +17,7 @@ class Sorter:
         try:
             self.data = [item for item in self.data if isinstance(item, dict)]
             if value:
-                self.data = [item for item in self.data if item.get(field) == value]  # Фильтрация по значению
+                self.data = [item for item in self.data if item.get(field) == value]
             if field is None and self.data:
                 field = list(self.data[0].keys())[0]
             self.data = sorted(self.data, key=lambda x: x.get(field), reverse=reverse)
@@ -25,10 +25,9 @@ class Sorter:
             return {"error": f"Поле '{field}' не найдено в данных."}
         except TypeError as e:
             return {"error": f"Ошибка при сортировке: {e}"}
-
-    def write_to_file(self, filename):
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(self.data, f, ensure_ascii=False, indent=4)
+def write_to_file(self, filename):
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(self.data, f, ensure_ascii=False, indent=4)
 
 @app.route("/")
 def index():
@@ -39,13 +38,12 @@ def sort():
     data = request.json
     json_data = data.get("json_data")
     sort_field = data.get("sort_field")
-    sort_value = data.get("sort_value")  # Получаем значение для сортировки
+    sort_value = data.get("sort_value")
     reverse_sort = data.get("reverse_sort") == "yes"
 
     sorter = Sorter()
     sorter.set_data(json_data)
 
-    # Если указано значение для сортировки, фильтруем данные
     if sort_value:
         sorter.data = [item for item in sorter.data if str(item.get(sort_field)) == str(sort_value)]
 
@@ -55,6 +53,7 @@ def sort():
         return jsonify({"status": "error", "message": sort_result["error"]})
     
     return jsonify({"status": "success", "sorted_data": sorter.data})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
