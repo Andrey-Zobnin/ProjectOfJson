@@ -60,6 +60,19 @@
                         <p id="sortedFileInfo" class="mt-2"></p> <!-- Информация об отсортированном файле -->
                     </div>
                 </div>
+                <hr>
+                <h3 class="mt-4">Конвертация</h3>
+                <div class="form-group">
+                    <label for="csvFileInput">Загрузите CSV-файл:</label>
+                    <input type="file" id="csvFileInput" accept=".csv" class="form-control">
+                </div>
+                <button type="button" class="btn btn-primary" id="convertCsvToJsonBtn" style="display: none;">Конвертировать CSV в JSON</button>
+                <button type="button" class="btn btn-primary" id="convertJsonToCsvBtn" style="display: none;">Конвертировать JSON в CSV</button>
+                <h5 class="mt-4">Результат конвертации:</h5>
+                <div id="conversionResultDisplay" class="line-numbers" style="border: 1px solid #ccc; padding: 10px; max-height: 300px; overflow-y: auto;"></div>
+                <button type="button" class="btn btn-success" id="downloadConvertedBtn" style="display: none;">Скачать конвертированный файл</button>
+                <button type="button" class="btn btn-info" id="copyConvertedBtn" style="display: none;">Скопировать конвертированный файл</button>
+                <p id="convertedFileInfo" class="mt-2"></p> <!-- Информация о конвертированном файле -->
             </div>
         </div>
     </div>
