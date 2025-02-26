@@ -1,12 +1,12 @@
 let jsonData = null;
 let csvData = null;
-let convertedData = null;
 
 document.getElementById("copyUploadedBtn").style.display = "none";
 document.getElementById("downloadUploadedBtn").style.display = "none";
 document.getElementById("copySortedBtn").style.display = "none";
 document.getElementById("downloadSortedBtn").style.display = "none";
 document.getElementById("convertJsonToCsvBtn").style.display = "none";
+document.getElementById("convertCsvToJsonBtn").style.display = "none";
 document.getElementById("downloadConvertedBtn").style.display = "none";
 document.getElementById("copyConvertedBtn").style.display = "none";
 
@@ -94,6 +94,7 @@ function handleCsvFileSelect(event) {
         reader.onload = (e) => {
             csvData = e.target.result;
             document.getElementById("conversionResultDisplay").innerText = csvData;
+            document.getElementById("convertCsvToJsonBtn").style.display = "block"; // Show the button to convert CSV to JSON
         };
         reader.readAsText(file);
     } else {
