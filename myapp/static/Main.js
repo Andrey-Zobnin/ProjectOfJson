@@ -1,12 +1,10 @@
 let jsonData = null;
 
-// Скрываем кнопки по умолчанию
 document.getElementById("copyUploadedBtn").style.display = "none";
 document.getElementById("downloadUploadedBtn").style.display = "none";
 document.getElementById("copySortedBtn").style.display = "none";
 document.getElementById("downloadSortedBtn").style.display = "none";
 
-// Добавляем обработчики событий
 document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 document.getElementById("sortBtn").addEventListener("click", sortJson);
 document.getElementById("downloadUploadedBtn").addEventListener("click", downloadUploadedFile);
@@ -31,7 +29,7 @@ function downloadSortedFile() {
     URL.revokeObjectURL(url);
 }
 
-// Функция для управления отображением поля ввода значения
+// Управление отображением поля ввода значения
 document.getElementById("reverse_sort").addEventListener("change", function() {
     const valueInputGroup = document.getElementById("valueInputGroup");
     if (this.value === "value") {
@@ -147,14 +145,9 @@ async function sortJson() {
         document.getElementById("downloadSortedBtn").style.display = "block"; 
         document.getElementById("result").textContent = "Сортировка завершена!";
     }
-}ementById("reverse_sort").value === "yes";
+}
 
-    if (!jsonData || jsonData.length === 0) {
-        document.getElementById("result").textContent = "Пожалуйста, загрузите JSON-файл сначала.";
-        return;
-    }
-
-    // Обработчики событий для копирования содержимого
+// Обработчики событий для копирования содержимого
 document.getElementById("copyUploadedBtn").addEventListener("click", copyUploadedContent);
 document.getElementById("copySortedBtn").addEventListener("click", copySortedContent);
 
