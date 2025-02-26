@@ -2,10 +2,12 @@ import os
 from flask import Flask, render_template, request, jsonify
 import json
 
+# пулл приложухи на основе Flask
 app = Flask(__name__)
 
 class Sorter:
     def __init__(self):
+        
         self.data = None
 
     def set_data(self, data):
@@ -51,6 +53,6 @@ def sort():
     sorter.write_to_file(sorted_filename)
 
     return jsonify({"status": "success", "sorted_file": sorted_filename, "sorted_data": sorter.data})
-
+# Run the Flask app in debug mode (for development) or in production mode (for production)
 if __name__ == "__main__":
     app.run(debug=True)
