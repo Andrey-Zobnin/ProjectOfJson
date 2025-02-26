@@ -5,28 +5,28 @@ document.getElementById("copyUploadedBtn").style.display = "none";
 document.getElementById("downloadUploadedBtn").style.display = "none";
 document.getElementById("copySortedBtn").style.display = "none";
 document.getElementById("downloadSortedBtn").style.display = "none";
-document.getElementById("convertJsonToCsvBtn").style.display = "none";
-document.getElementById("convertCsvToJsonBtn").style.display = "none";
 document.getElementById("downloadConvertedBtn").style.display = "none";
 document.getElementById("copyConvertedBtn").style.display = "none";
+document.getElementById("convertBtn").style.display = "none";
+document.getElementById("conversionSection").style.display = "none";
 
 document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 document.getElementById("sortBtn").addEventListener("click", sortJson);
 document.getElementById("downloadUploadedBtn").addEventListener("click", downloadUploadedFile);
 document.getElementById("downloadSortedBtn").addEventListener("click", downloadSortedFile);
-document.getElementById("csvFileInput").addEventListener("change", handleCsvFileSelect);
-document.getElementById("convertCsvToJsonBtn").addEventListener("click", convertCsvToJson);
-document.getElementById("convertJsonToCsvBtn").addEventListener("click", convertJsonToCsv);
-
-document.getElementById("reverse_sort").addEventListener("change", function() {
-    const valueInputGroup = document.getElementById("valueInputGroup");
-    if (this.value === "value") {
-        valueInputGroup.style.display = "block";
-    } else {
-        valueInputGroup.style.display = "none";
-        document.getElementById("sort_value").value = "";
-    }
+document.getElementById("conversionFileInput").addEventListener("change", handleConversionFileSelect);
+document.getElementById("convertJsonToCsvBtn").addEventListener("click", () => {
+    document.getElementById("conversionSection").style.display = "block";
+    document.getElementById("conversionFileInput").accept = ".json";
+    document.getElementById("convertBtn").style.display = "block";
 });
+document.getElementById("convertCsvToJsonBtn").addEventListener("click", () => {
+    document.getElementById("conversionSection").style.display = "block";
+    document.getElementById("conversionFileInput").accept = ".csv";
+    document.getElementById("convertBtn").style.display = "block";
+});
+
+document.getElementById("convertBtn").addEventListener("click", convertFile);
 
 function downloadSortedFile() {
     const sortedContent = document.getElementById("sortedContentDisplay").innerText;
@@ -87,18 +87,31 @@ async function handleFileSelect(event) {
     }
 }
 
-function handleCsvFileSelect(event) {
+function handleConversionFileSelect(event) {
     const file = event.target.files[0];
-    if (file && file.type === "text/csv") {
+    if (file) {
         const reader = new FileReader();
         reader.onload = (e) => {
-            csvData = e.target.result;
-            document.getElementById("conversionResultDisplay").innerText = csvData;
-            document.getElementById("convertCsvToJsonBtn").style.display = "block"; // Show the button to convert CSV to JSON
+            if (file.type === "application/json") {
+                jsonData = JSON.parse(e.target.result);
+            } else if (file.type === "text/csv") {
+                csvData = e.target.result;
+            }
+            document.getElementById("convertBtn").style.display = "block"; // Show convert button
         };
         reader.readAsText(file);
     } else {
-        alert("Пожалуйста, выберите корректный CSV-файл.");
+        alert("Пожалуйста, выберите корректный файл.");
+    }
+}
+
+function convertFile() {
+    if (jsonData) {
+        convertJsonToCsv();
+    } else if (csvData) {
+        convertCsvToJson();
+    } else {
+        alert("Сначала загрузите файл для конвертации.");
     }
 }
 
