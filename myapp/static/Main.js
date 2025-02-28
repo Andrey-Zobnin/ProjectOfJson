@@ -39,6 +39,20 @@ function downloadSortedFile() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
+function convertJsonToCsv(jsonData) {
+    const csvContent = [];
+    const headers = Object.keys(jsonData[0]);
+    csvContent.push(headers.join(","));
+    
+    jsonData.forEach((row) => {
+        const rowContent = headers.map((header) => {
+            return row[header];
+        }).join(",");
+        csvContent.push(rowContent);
+    });
+    
+    return csvContent.join("\n");
+}
 
 // Функция для скачивания загруженного файла
 function downloadUploadedFile() {
