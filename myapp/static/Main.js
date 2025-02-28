@@ -80,6 +80,32 @@ function convertJsonToCsvHandler() {
     const csvContent = convertJsonToCsv(jsonData);
     document.getElementById("csvContent").value = csvContent;
 }
+function downloadConvertedFile() {
+    const csvContent = document.getElementById("csvContent").value;
+    const jsonContent = document.getElementById("jsonContent").value;
+    
+    if (csvContent) {
+        const blob = new Blob([csvContent], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "converted_data.csv";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    } else if (jsonContent) {
+        const blob = new Blob([jsonContent], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "converted_data.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+}
 
 // Функция для скачивания загруженного файла
 function downloadUploadedFile() {
