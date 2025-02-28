@@ -1,5 +1,4 @@
 const App = (() => {
-
     let jsonData = null;
 
     let csvData = null;
@@ -11,6 +10,35 @@ const App = (() => {
 
     };
 
+
+    const setupEventListeners = () => {
+
+        document.getElementById("fileInput").addEventListener("change", handleFileSelect);
+
+        document.getElementById("sortBtn").addEventListener("click", sortJson);
+
+        document.getElementById("downloadUploadedBtn").addEventListener("click", downloadUploadedFile);
+
+        document.getElementById("downloadSortedBtn").addEventListener("click", downloadSortedFile);
+
+        document.getElementById("conversionFileInput").addEventListener("change", handleConversionFileSelect);
+
+        document.getElementById("convertJsonToCsvBtn").addEventListener("click", () => {
+
+            showConversionSection(".json");
+
+        });
+
+        document.getElementById("convertCsvToJsonBtn").addEventListener("click", () => {
+            showConversionSection(".csv");
+            });
+
+
+    const init = () => {
+
+        setupEventListeners();
+
+    };
 document.getElementById("copyUploadedBtn").style.display = "none";
 document.getElementById("downloadUploadedBtn").style.display = "none";
 document.getElementById("copySortedBtn").style.display = "none";
