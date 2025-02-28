@@ -62,7 +62,7 @@ const App = (() => {
 
     const sortJson = () => {
         const sortField = document.getElementById("sort_field").value;
-        const reverseSort = document.getElementById("reverse_sort").value;
+        const reverseSort = document.getElementById("reverse_sort").value === "yes";
         const sortValue = document.getElementById("sort_value").value;
 
         if (!sortField) {
@@ -74,7 +74,7 @@ const App = (() => {
             json_data: jsonData,
             sort_field: sortField,
             sort_value: sortValue,
-            reverse_sort: reverseSort
+            reverse_sort: reverseSort ? "yes" : "no"
         };
 
         fetch("/sort", {
