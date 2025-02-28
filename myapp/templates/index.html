@@ -41,38 +41,25 @@
                     <button type="button" class="btn btn-success" id="downloadBtn" style="display: none;">Скачать отсортированный файл</button>
                 </form>
                 <p id="result" class="mt-3 success-message" style="display: none;">Сортировка завершена</p>
+                <div id="progress" class="mt-3" style="display: none;">
+                    <p>Сортировка в процессе: <span id="progressText">Загрузка...</span></p>
+                </div>
                 <div class="row mt-3">
                     <div class="col-md-6">
                         <h5 id="uploadedContentLabel">Содержимое загруженного файла:</h5>
-                        <button type="button" class="copy-btn btn" id="copyUploadedBtn" style="display: none;">Скопировать содержимое загруженного файла</button>
-                        <button type="button" class="copy-btn btn" id="downloadUploadedBtn" style="display: none;">Скачать загруженный файл</button>
+                        <button type="button" class="copy-btn btn" id="copyUploadedBtn">Скопировать содержимое загруженного файла</button>
+                        <button type="button" class="copy-btn btn" id="downloadUploadedBtn">Скачать загруженный файл</button>
                         <div id="contentDisplay" class="line-numbers" style="border: 1px solid #ccc; padding: 10px; max-height: 300px; overflow-y: auto;"></div>
-                        <p id="uploadedFileInfo" class="mt-2"></p>
+                        <p id="uploadedFileInfo" class="mt-2"></p> <!-- Информация о загруженном файле -->
                     </div>
                     <div class="col-md-6">
                         <h5 id="sortedContentLabel">Содержимое отсортированного файла:</h5>
                         <button type="button" class="copy-btn btn" id="copySortedBtn" style="display: none;">Скопировать содержимое отсортированного файла</button>
                         <button type="button" class="copy-btn btn" id="downloadSortedBtn" style="display: none;">Скачать отсортированный файл</button>
                         <div id="sortedContentDisplay" class="line-numbers" style="border: 1px solid #ccc; padding: 10px; max-height: 300px; overflow-y: auto;"></div>
-                        <p id="sortedFileInfo" class="mt-2"></p>
+                        <p id="sortedFileInfo" class="mt-2"></p> <!-- Информация об отсортированном файле -->
                     </div>
                 </div>
-                <hr>
-                <h3 class="mt-4">Конвертация</h3>
-                <button type="button" class="btn btn-primary" id="convertJsonToCsvBtn">Конвертировать JSON в CSV</button>
-                <button type="button" class="btn btn-primary" id="convertCsvToJsonBtn">Конвертировать CSV в JSON</button>
-                <div id="conversionSection" style="display: none;">
-                    <div class="form-group mt-3">
-                        <label for="conversionFileInput" id="conversionFileInputLabel">Загрузите файл:</label>
-                        <input type="file" id="conversionFileInput" accept=".json, .csv" class="form-control">
-                    </div>
-                    <button type="button" class="btn btn-success" id="convertBtn" style="display: none;">Конвертировать</button>
-                </div>
-                <h5 class="mt-4">Результат конвертации:</h5>
-                <div id="conversionResultDisplay" class="line-numbers" style="border: 1px solid #ccc; padding: 10px; max-height: 300px; overflow-y: auto;"></div>
-                <button type="button" class="btn btn-success" id="downloadConvertedBtn" style="display: none;">Скачать конвертированный файл</button>
-                <button type="button" class="btn btn-info" id="copyConvertedBtn" style="display: none;">Скопировать конвертированный файл</button>
-                <p id="convertedFileInfo" class="mt-2"></p>
             </div>
         </div>
     </div>
