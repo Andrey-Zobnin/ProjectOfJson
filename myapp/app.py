@@ -22,7 +22,7 @@ class Sorter(DataInit):
         try:
             data = [item for item in self.get_data() if isinstance(item, dict)]
             if value:
-                data = [item for item in data if item.get(field) == value]
+                data = [item for item in data if str(item.get(field)) == str(value)]
             if field is None and data:
                 field = list(data[0].keys())[0]
             sorted_data = sorted(data, key=lambda x: x.get(field), reverse=reverse)
@@ -57,6 +57,7 @@ class App:
 
             self.sorter.set_data(json_data)
 
+            # Фильтрация по значению, если оно указано
             if sort_value:
                 self.sorter.set_data([item for item in self.sorter.get_data() if str(item.get(sort_field)) == str(sort_value)])
 
