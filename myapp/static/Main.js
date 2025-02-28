@@ -34,11 +34,6 @@ const App = (() => {
             });
 
 
-    const init = () => {
-
-        setupEventListeners();
-
-    };
 document.getElementById("copyUploadedBtn").style.display = "none";
 document.getElementById("downloadUploadedBtn").style.display = "none";
 document.getElementById("copySortedBtn").style.display = "none";
