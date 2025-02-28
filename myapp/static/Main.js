@@ -53,6 +53,22 @@ function convertJsonToCsv(jsonData) {
     
     return csvContent.join("\n");
 }
+function convertCsvToJson(csvContent) {
+    const jsonData = [];
+    const rows = csvContent.split("\n");
+    const headers = rows.shift().split(",");
+    
+    rows.forEach((row) => {
+        const obj = {};
+        const values = row.split(",");
+        headers.forEach((header, index) => {
+            obj[header] = values[index];
+        });
+        jsonData.push(obj);
+    });
+    
+    return jsonData;
+}
 
 // Функция для скачивания загруженного файла
 function downloadUploadedFile() {
