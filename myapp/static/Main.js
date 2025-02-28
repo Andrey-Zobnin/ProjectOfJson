@@ -159,6 +159,47 @@ const App = (() => {
         uploadedFileInfo.textContent = `Количество строк: ${lineCount}, Размер файла: ${fileSize} КБ`;
     };
 
+    const updateSortFieldOptions = (data) => {
+        const sortFieldSelect = document.getElementById("sort_field");
+        sortFieldSelect.innerHTML = '<option value="">Выберите поле</option>'; // Сбросить предыдущие опции
+        const fields = Object.keys(data[0]);
+        fields.forEach(field => {
+            const option = document.createElement("option");
+            option.value = field;
+            option.textContent = field;
+            sortFieldSelect.appendChild(option);
+        });
+    };
+
+    const sortJson = () => {
+        const sortField = document.getElementById("sort_field").value;
+        const reverseSort = document.getElementById("reverse_sort").value === "yes";
+        const sortValue = document.getElementById("sort_value").value;
+
+        if (!sortField) {
+            alert("Пожалуйста, выберите поле для сортировки.");
+            return;
+        }
+
+        let sortedData = [...jsonData];
+
+        if (sortValue) {
+            sortedData = sortedData.filter(item => item[sortField] == sortValue);
+        }
+
+        sortedData.sort((a, b) => {
+            if (a[sortField] < b[sortField]) return reverseSort ? 1 : -1;
+            if (a[sortField] > b[sortField]) return reverseSort ? -1 : 1;
+            return 0;
+        });
+
+        document.getElementById("sortedContentDisplay").innerHTML = formatJsonWithLineNumbers(sortedData);
+        document.getElementById("copySortedBtn").style.display = "block";
+        document.getElementById("downloadSortedBtn").style.display = "block";
+        document.getElementById("result").style.display = "block";
+        document.getElementById("result").textContent = "Сортировка завершена";
+    };
+
     return {
         init,
     };
