@@ -37,6 +37,8 @@ const App = (() => {
                     updateContentDisplay(jsonData);
                     updateSortFieldOptions(jsonData);
                     displayFileInfo(file, jsonData.length);
+                    document.getElementById("copyUploadedBtn").style.display = "block";
+                    document.getElementById("downloadUploadedBtn").style.display = "block";
                     document.getElementById("convertJsonToCsvBtn").style.display = "block";
                 } catch (error) {
                     alert("Ошибка при чтении файла: " + error.message);
