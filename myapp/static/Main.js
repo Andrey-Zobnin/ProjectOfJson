@@ -1,6 +1,5 @@
 const App = (() => {
     let jsonData = null;
-    let csvData = null;
 
     const init = () => {
         setupEventListeners();
@@ -61,115 +60,50 @@ const App = (() => {
         }
     };
 
-    const handleConversionFileSelect = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                if (file.type === "application/json") {
-                    jsonData = JSON.parse(e.target.result);
-                } else if (file.type === "text/csv") {
-                    csvData = e.target.result;
-                }
-                document.getElementById("convertBtn").style.display = "block"; // Показать кнопку конвертации
-            };
-            reader.readAsText(file);
-        } else {
-            alert("Пожалуйста, выберите корректный файл.");
-        }
-    };
+    const sortJson = () => {
+        const sortField = document.getElementById("sort_field").value;
+        const reverseSort = document.getElementById("reverse_sort").value;
+        const sortValue = document.getElementById("sort_value").value;
 
-    const convertFile = () => {
-        if (jsonData) {
-            convertJsonToCsv();
-        } else if (csvData) {
-            convertCsvToJson();
-        } else {
-            alert("Сначала загрузите файл для конвертации.");
-        }
-    };
-
-    const convertJsonToCsv = () => {
-        if (!jsonData) {
-            alert("Сначала загрузите JSON-файл.");
+        if (!sortField) {
+            alert("Пожалуйста, выберите поле для сортировки.");
             return;
         }
 
-        const csv = jsonToCsv(jsonData);
-        updateConversionResultDisplay(csv);
-        downloadCsv(csv, "converted_data.csv");
-    };
+        const requestData = {
+            json_data: jsonData,
+            sort_field: sortField,
+            sort_value: sortValue,
+            reverse_sort: reverseSort
+        };
 
-    const convertCsvToJson = () => {
-        if (!csvData) {
-            alert("Сначала загрузите CSV-файл.");
-            return;
-        }
-
-        const json = csvToJson(csvData);
-        updateConversionResultDisplay(formatJsonWithLineNumbers(json));
+        fetch("/sort", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "error") {
+                alert(data.message);
+            } else {
+                const sortedData = data.sorted_data;
+                document.getElementById("sortedContentDisplay").innerHTML = formatJsonWithLineNumbers(sortedData);
+                document.getElementById("copySortedBtn").style.display = "block";
+                document.getElementById("downloadSortedBtn").style.display = "block";
+                document.getElementById("result").style.display = "block";
+                document.getElementById("result").textContent = "Сортировка завершена";
+            }
+        })
+        .catch(error => {
+            console.error("Ошибка:", error);
+        });
     };
 
     const updateContentDisplay = (data) => {
         document.getElementById("contentDisplay").innerHTML = formatJsonWithLineNumbers(data);
-    };
-
-    const updateConversionResultDisplay = (result) => {
-        document.getElementById("conversionResultDisplay").innerHTML = result;
-    };
-
-    const jsonToCsv = (json) => {
-        const rows = [];
-        const headers = Object.keys(json[0]);
-        rows.push(headers.join(','));
-
-        for (const item of json) {
-            const values = headers.map(header => item[header]);
-            rows.push(values.join(','));
-        }
-
-        return rows.join('\n');
-    };
-
-    const csvToJson = (csv) => {
-        const lines = csv.split('\n');
-        const headers = lines[0].split(',');
-        const result = [];
-
-        for (let i = 1; i < lines.length; i++) {
-            const obj = {};
-            const currentLine = lines[i].split(',');
-
-            for (let j = 0; j < headers.length; j++) {
-                obj[headers[j]] = currentLine[j];
-            }
-
-            result.push(obj);
-        }
-
-        return result;
-    };
-
-    const downloadCsv = (csv, filename) => {
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.setAttribute('download', filename);
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    };
-    
-    const formatJsonWithLineNumbers = (data) => {
-        const jsonString = JSON.stringify(data, null, 2);
-        return jsonString.split('\n').map(line => `<div>${line}</div>`).join('');
-    };
-
-    const displayFileInfo = (file, lineCount) => {
-        const uploadedFileInfo = document.getElementById("uploadedFileInfo");
-        const fileSize = (file.size / 1024).toFixed(2);
-        uploadedFileInfo.textContent = `Количество строк: ${lineCount}, Размер файла: ${fileSize} КБ`;
     };
 
     const updateSortFieldOptions = (data) => {
@@ -184,33 +118,15 @@ const App = (() => {
         });
     };
 
-    const sortJson = () => {
-        const sortField = document.getElementById("sort_field").value;
-        const reverseSort = document.getElementById("reverse_sort").value === "yes";
-        const sortValue = document.getElementById("sort_value").value;
+    const formatJsonWithLineNumbers = (data) => {
+        const jsonString = JSON.stringify(data, null, 2);
+        return jsonString.split('\n').map(line => `<div>${line}</div>`).join('');
+    };
 
-        if (!sortField) {
-            alert("Пожалуйста, выберите поле для сортировки.");
-            return;
-        }
-
-        let sortedData = [...jsonData];
-
-        if (sortValue) {
-            sortedData = sortedData.filter(item => item[sortField] == sortValue);
-        }
-
-        sortedData.sort((a, b) => {
-            if (a[sortField] < b[sortField]) return reverseSort ? 1 : -1;
-            if (a[sortField] > b[sortField]) return reverseSort ? -1 : 1;
-            return 0;
-        });
-
-        document.getElementById("sortedContentDisplay").innerHTML = formatJsonWithLineNumbers(sortedData);
-        document.getElementById("copySortedBtn").style.display = "block";
-        document.getElementById("downloadSortedBtn").style.display = "block";
-        document.getElementById("result").style.display = "block";
-        document.getElementById("result").textContent = "Сортировка завершена";
+    const displayFileInfo = (file, lineCount) => {
+        const uploadedFileInfo = document.getElementById("uploadedFileInfo");
+        const fileSize = (file.size / 1024).toFixed(2);
+        uploadedFileInfo.textContent = `Количество строк: ${lineCount}, Размер файла: ${fileSize} КБ`;
     };
 
     return {
