@@ -1,5 +1,15 @@
-let jsonData = null;
-let csvData = null;
+const App = (() => {
+
+    let jsonData = null;
+
+    let csvData = null;
+
+
+    const init = () => {
+
+        setupEventListeners();
+
+    };
 
 document.getElementById("copyUploadedBtn").style.display = "none";
 document.getElementById("downloadUploadedBtn").style.display = "none";
