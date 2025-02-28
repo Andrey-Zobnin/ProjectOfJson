@@ -96,7 +96,7 @@ function handleConversionFileSelect(event) {
             } else if (file.type === "text/csv") {
                 csvData = e.target.result;
             }
-            document.getElementById("convertBtn").style.display = "block"; // Show convert button
+            document.getElementById("convertBtn").style.display = "block"; // show button to convert 
         };
         reader.readAsText(file);
     } else {
