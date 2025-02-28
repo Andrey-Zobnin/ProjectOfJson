@@ -19,12 +19,23 @@ const App = (() => {
             showConversionSection(".csv");
         });
         document.getElementById("convertBtn").addEventListener("click", convertFile);
+        document.getElementById("reverse_sort").addEventListener("change", toggleValueInput);
     };
 
     const showConversionSection = (fileType) => {
         document.getElementById("conversionSection").style.display = "block";
         document.getElementById("conversionFileInput").accept = fileType;
         document.getElementById("convertBtn").style.display = "block";
+    };
+
+    const toggleValueInput = () => {
+        const sortBy = document.getElementById("reverse_sort").value;
+        const valueInputGroup = document.getElementById("valueInputGroup");
+        if (sortBy === "value") {
+            valueInputGroup.style.display = "block";
+        } else {
+            valueInputGroup.style.display = "none";
+        }
     };
 
     const handleFileSelect = (event) => {
@@ -149,7 +160,7 @@ const App = (() => {
         a.click();
         document.body.removeChild(a);
     };
-
+    
     const formatJsonWithLineNumbers = (data) => {
         const jsonString = JSON.stringify(data, null, 2);
         return jsonString.split('\n').map(line => `<div>${line}</div>`).join('');
