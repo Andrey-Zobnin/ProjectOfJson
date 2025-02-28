@@ -69,7 +69,11 @@ function convertCsvToJson(csvContent) {
     
     return jsonData;
 }
-
+function convertCsvToJsonHandler() {
+    const csvContent = document.getElementById("csvContent").value;
+    const jsonData = convertCsvToJson(csvContent);
+    document.getElementById("jsonContent").value = JSON.stringify(jsonData, null, 2);
+}
 // Функция для скачивания загруженного файла
 function downloadUploadedFile() {
     if (!jsonData) {
