@@ -4,6 +4,10 @@ document.getElementById("copyUploadedBtn").style.display = "none";
 document.getElementById("downloadUploadedBtn").style.display = "none";
 document.getElementById("copySortedBtn").style.display = "none";
 document.getElementById("downloadSortedBtn").style.display = "none";
+// Обработчики для кнопок конвертации
+document.getElementById("convertToJsonBtn").addEventListener("click", convertToJsonHandler);
+document.getElementById("convertToCsvBtn").addEventListener("click", convertToCsvHandler);
+document.getElementById("downloadConvertedBtn").addEventListener("click", downloadConvertedFile);
 
 document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 document.getElementById("sortBtn").addEventListener("click", sortJson);
@@ -39,6 +43,8 @@ function downloadSortedFile() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
+
+// Функция для конвертации JSON в CSV
 function convertJsonToCsv(jsonData) {
     const csvContent = [];
     const headers = Object.keys(jsonData[0]);
@@ -53,6 +59,8 @@ function convertJsonToCsv(jsonData) {
     
     return csvContent.join("\n");
 }
+
+// Функция для конвертации CSV в JSON
 function convertCsvToJson(csvContent) {
     const jsonData = [];
     const rows = csvContent.split("\n");
@@ -69,33 +77,43 @@ function convertCsvToJson(csvContent) {
     
     return jsonData;
 }
-function convertCsvToJsonHandler() {
-    const csvContent = document.getElementById("csvContent").value;
+
+// Обработчик конвертации в JSON
+function convertToJsonHandler() {
+    const csvContent = document.getElementById("convertedContent").value;
+    if (!csvContent) {
+        alert("Нет данных для конвертации.");
+        return;
+    }
     const jsonData = convertCsvToJson(csvContent);
-    document.getElementById("jsonContent").value = JSON.stringify(jsonData, null, 2);
+    document.getElementById("convertedContent").value = JSON.stringify(jsonData, null, 2);
+    document.getElementById("downloadConvertedBtn").style.display = "block";
 }
-function convertJsonToCsvHandler() {
-    const jsonContent = document.getElementById("jsonContent").value;
+
+// Обработчик конвертации в CSV
+function convertToCsvHandler() {
+    const jsonContent = document.getElementById("convertedContent").value;
+    if (!jsonContent) {
+        alert("Нет данных для конвертации.");
+        return;
+    }
     const jsonData = JSON.parse(jsonContent);
     const csvContent = convertJsonToCsv(jsonData);
-    document.getElementById("csvContent").value = csvContent;
+    document.getElementById("convertedContent").value = csvContent;
+    document.getElementById("downloadConvertedBtn").style.display = "block";
 }
+
+// Функция для скачивания конвертированного файла
 function downloadConvertedFile() {
-    const csvContent = document.getElementById("csvContent").value;
-    const jsonContent = document.getElementById("jsonContent").value;
-    
-    if (csvContent) {
-        const blob = new Blob([csvContent], { type: "text/csv" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "converted_data.csv";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    } else if (jsonContent) {
-        const blob = new Blob([jsonContent], { type: "application/json" });
+    const convertedContent = document.getElementById("convertedContent").value;
+    if (!convertedContent) {
+        alert("Нет данных для скачивания.");
+        return;
+    }
+
+    const format = prompt("Введите формат для скачивания (json/csv):").toLowerCase();
+    if (format === "json") {
+        const blob = new Blob([convertedContent], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -104,59 +122,18 @@ function downloadConvertedFile() {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-    }
-}
-
-// Функция для скачивания загруженного файла
-function downloadUploadedFile() {
-    if (!jsonData) {
-        alert("Нет загруженного файла.");
-        return;
-    }
-
-    const jsonString = JSON.stringify(jsonData, null, 2);
-    const blob = new Blob([jsonString], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "uploaded_data.json";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
-
-// Функция для обработки выбора файла
-async function handleFileSelect(event) {
-    const file = event.target.files[0];
-    if (file && file.type === "application/json") {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                jsonData = JSON.parse(e.target.result);
-                document.getElementById("contentDisplay").innerHTML = formatJsonWithLineNumbers(jsonData);
-                document.getElementById("result").textContent = "Файл загружен успешно!";
-                updateSortFieldOptions(jsonData);
-
-                // Отображаем информацию о загруженном файле
-                displayFileInfo(file, jsonData.length);
-
-                document.getElementById("copyUploadedBtn").style.display = "block";
-                document.getElementById("downloadUploadedBtn").style.display = "block";
-
-                // Проверяем, если параметр сортировки уже выбран
-                const sortSelect = document.getElementById("reverse_sort");
-                if (sortSelect.value === "value") {
-                    document.getElementById("valueInputGroup").style.display = "block"; // Показываем поле для ввода значения
-                }
-            } catch (error) {
-                document.getElementById("result").textContent = "Ошибка при чтении файла: " + error.message;
-            }
-        };
-        reader.readAsText(file);
+    } else if (format === "csv") {
+        const blob = new Blob([convertedContent], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "converted_data.csv";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     } else {
-        document.getElementById("result").textContent = "Пожалуйста, выберите корректный JSON-файл.";
+        alert("Неподдерживаемый формат.");
     }
 }
 
