@@ -74,6 +74,13 @@ function convertCsvToJsonHandler() {
     const jsonData = convertCsvToJson(csvContent);
     document.getElementById("jsonContent").value = JSON.stringify(jsonData, null, 2);
 }
+function convertJsonToCsvHandler() {
+    const jsonContent = document.getElementById("jsonContent").value;
+    const jsonData = JSON.parse(jsonContent);
+    const csvContent = convertJsonToCsv(jsonData);
+    document.getElementById("csvContent").value = csvContent;
+}
+
 // Функция для скачивания загруженного файла
 function downloadUploadedFile() {
     if (!jsonData) {
