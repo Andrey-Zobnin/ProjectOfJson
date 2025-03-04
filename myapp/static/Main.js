@@ -18,7 +18,7 @@ document.getElementById("copyUploadedBtn").addEventListener("click", copyUploade
 document.getElementById("copySortedBtn").addEventListener("click", copySortedContent);
 
 // Управление отображением поля ввода значения
-document.getElementById("reverse_sort").addEventListener("change", function () {
+document.getElementById("reverse_sort").addEventListener("change", function() {
     const valueInputGroup = document.getElementById("valueInputGroup");
     if (this.value === "value") {
         valueInputGroup.style.display = "block"; // Показываем поле для ввода значения
@@ -272,7 +272,7 @@ function handleFileSelect(event) {
         return;
     }
     const reader = new FileReader();
-    reader.onload = function (e) {
+    reader.onload = function(e) {
         try {
             jsonData = JSON.parse(e.target.result);
             updateSortFieldOptions(jsonData);
