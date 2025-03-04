@@ -41,6 +41,9 @@ class Converter:
     def csv_to_excel(self, csv_data, filename):
         # TODO: Implement CSV to Excel conversion
         pass
+    def excel_to_csv(self, excel_data, filename):
+        # TODO: Implement Excel to CSV conversion
+        pass
 
 @app.route("/")
 def index():
