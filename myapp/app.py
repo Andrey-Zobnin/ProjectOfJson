@@ -54,7 +54,8 @@ def sort():
     data = request.json
     json_data = data.get("json_data")
     sort_field = data.get("sort_field")
-    sort_value = data.get("sort_value")  # Получаем значение для сортировки
+    sort_value = data.get("sort_value")
+    sort_dependence = data.get("sort_dependence")  # Получаем значение для сортировки
     reverse_sort = data.get("reverse_sort") == "yes"
 
     sorter = Sorter()
