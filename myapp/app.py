@@ -38,6 +38,12 @@ class Converter:
     def csv_to_json(self, csv_data, filename):
         with open(filename, 'w', encoding='utf-8') as f:
             f.write('[' + '\n'.join(json.dumps(item) for item in csv_data) + '\n]')
+    def json_to_xml(self, json_data, filename):
+        # TODO: Implement JSON to XML conversion
+        pass
+    def json_to_excel(self, json_data, filename):
+        # TODO: Implement JSON to Excel conversion
+        pass
     def csv_to_excel(self, csv_data, filename):
         # TODO: Implement CSV to Excel conversion
         pass
