@@ -30,6 +30,18 @@ class Sorter:
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(self.data, f, ensure_ascii=False, indent=4)
 
+class Converter:
+    def json_to_csv(self, json_data, filename):
+        with open(filename, 'w', encoding='utf-8') as f:
+            for item in json_data:
+                f.write(','.join(str(value) for value in item.values()) + '\n')
+    def csv_to_json(self, csv_data, filename):
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write('[' + '\n'.join(json.dumps(item) for item in csv_data) + '\n]')
+    def csv_to_excel(self, csv_data, filename):
+        # TODO: Implement CSV to Excel conversion
+        pass
+
 @app.route("/")
 def index():
     return render_template("index.html")
