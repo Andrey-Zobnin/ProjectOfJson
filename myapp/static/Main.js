@@ -1,4 +1,5 @@
 let jsonData = null;
+let csvData = null;
 
 // Скрываем кнопки при загрузке страницы
 document.getElementById("copyUploadedBtn").style.display = "none";
