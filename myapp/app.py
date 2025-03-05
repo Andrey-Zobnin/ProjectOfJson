@@ -54,18 +54,6 @@ class Converter:
             json_data.append(dict(zip(headers, values)))
 
         return json_data
-    def json_to_xml(self, json_data, filename):
-        # TODO: Implement JSON to XML conversion
-        pass
-    def json_to_excel(self, json_data, filename):
-        # TODO: Implement JSON to Excel conversion
-        pass
-    def csv_to_excel(self, csv_data, filename):
-        # TODO: Implement CSV to Excel conversion
-        pass
-    def excel_to_csv(self, excel_data, filename):
-        # TODO: Implement Excel to CSV conversion
-        pass
 
 @app.route("/")
 def index():
@@ -77,7 +65,6 @@ def sort():
     json_data = data.get("json_data")
     sort_field = data.get("sort_field")
     sort_value = data.get("sort_value")
-    sort_dependence = data.get("sort_dependence")  # Получаем значение для сортировки
     reverse_sort = data.get("reverse_sort") == "yes"
 
     sorter = Sorter()
@@ -93,6 +80,23 @@ def sort():
         return jsonify({"status": "error", "message": sort_result["error"]})
     
     return jsonify({"status": "success", "sorted_data": sorter.data})
+
+@app.route("/convert", methods=["POST"])
+def convert():
+    data = request.json
+    conversion_type = data.get("conversion_type")
+    content = data.get("content")
+
+    converter = Converter()
+
+    if conversion_type == "json_to_csv":
+        csv_content = converter.json_to_csv(json.loads(content))
+        return jsonify({"status": "success", "converted_content": csv_content})
+    elif conversion_type == "csv_to_json":
+        json_data = converter.csv_to_json(content)
+        return jsonify({"status": "success", "converted_content": json.dumps(json_data, ensure_ascii=False, indent=4)})
+    else:
+        return jsonify({"status": "error", "message": "Неподдерживаемый тип конвертации."})
 
 if __name__ == "__main__":
     app.run(debug=True)
