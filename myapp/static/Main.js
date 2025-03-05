@@ -101,6 +101,7 @@ async function convertToJsonHandler() {
     if (result.status === "success") {
         document.getElementById("convertedContent").value = result.converted_content;
         document.getElementById("downloadConvertedBtn").style.display = "block";
+        document.getElementById("result").textContent = "Конвертация завершена! Тип: JSON";
     } else {
         alert(result.message);
     }
@@ -121,10 +122,14 @@ async function convertToCsvHandler() {
         body: JSON.stringify({ conversion_type: "json_to_csv", content: jsonContent })
     });
     const result = await response.json();
-    if (result.status === "success") {
+    if (result.status === "success") 
+    {
         document.getElementById("convertedContent").value = result.converted_content;
         document.getElementById("downloadConvertedBtn").style.display = "block";
-    } else {
+        document.getElementById("result").textContent = "Конвертация завершена! Тип: CSV";
+    }
+    else 
+    {
         alert(result.message);
     }
 }
@@ -180,8 +185,7 @@ function formatJsonWithLineNumbers(data) {
     return `<pre>${jsonString}</pre>`;
 }
 
-// Функция для обновления опций сортировкиf
-
+// Функция для обновления опций сортировки
 function updateSortFieldOptions(data) {
     const sortFieldSelect = document.getElementById("sort_field");
     sortFieldSelect.innerHTML = "";
@@ -296,6 +300,7 @@ function handleFileSelect(event) {
     const reader = new FileReader();
     reader.onload = function(e) {
         const content = e.target.result;
+        document.getElementById("convertedContent").value = content; // Загружаем содержимое в текстовое поле
 
         if (file.type === "application/json") {
             try {
