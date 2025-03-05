@@ -66,13 +66,13 @@ function convertJsonToCsv(jsonData) {
 // Функция для конвертации CSV в JSON
 function convertCsvToJson(csvContent) {
     const jsonData = [];
-    const rows = csvContent.split("\n");
-    const headers = rows.shift().split(",");
+    const rows = csvContent.split('\n');
+    const headers = rows.shift().split(',');
 
     rows.forEach((row) => {
         if (row.trim() === "") return; // Пропускаем пустые строки
         const obj = {};
-        const values = row.split(",");
+        const values = row.split(',');
         headers.forEach((header, index) => {
             obj[header] = values[index];
         });
@@ -284,21 +284,27 @@ function handleFileSelect(event) {
         alert("Файл не выбран.");
         return;
     }
-    if (file.type !== "application/json") {
-        alert("Пожалуйста, выберите JSON-файл.");
-        return;
-    }
     const reader = new FileReader();
     reader.onload = function(e) {
-        try {
-            jsonData = JSON.parse(e.target.result);
-            updateSortFieldOptions(jsonData);
-            document.getElementById("contentDisplay").innerHTML = formatJsonWithLineNumbers(jsonData);
-            document.getElementById("copyUploadedBtn").style.display = "block";
-            document.getElementById("downloadUploadedBtn").style.display = "block";
-            displayFileInfo(file, jsonData.length);
-        } catch (error) {
-            alert("Ошибка при чтении файла: " + error.message);
+        const content = e.target.result;
+        document.getElementById("convertedContent").value = content; // Загружаем содержимое в текстовое поле
+
+        if (file.type === "application/json") {
+            try {
+                jsonData = JSON.parse(content);
+                updateSortFieldOptions(jsonData);
+                document.getElementById("contentDisplay").innerHTML = formatJsonWithLineNumbers(jsonData);
+                document.getElementById("copyUploadedBtn").style.display = "block";
+                document.getElementById("downloadUploadedBtn").style.display = "block";
+                displayFileInfo(file, jsonData.length);
+            } catch (error) {
+                alert("Ошибка при чтении JSON файла: " + error.message);
+            }
+        } else if (file.type === "text/csv") {
+            document.getElementById("convertedContent").value = content; // Загружаем содержимое в текстовое поле
+            document.getElementById("convertToJsonBtn").style.display = "block"; // Показываем кнопку конвертации в JSON
+        } else {
+            alert("Неподдерживаемый формат файла. Пожалуйста, загрузите JSON или CSV файл.");
         }
     };
     reader.readAsText(file);
