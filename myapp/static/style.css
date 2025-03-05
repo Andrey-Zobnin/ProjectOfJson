@@ -15,11 +15,17 @@
 .btn.active {
     background-color: #28a745;
     color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 .btn.active:hover {
     background-color: #25a049;
 }
+
 .copy-btn {
     font-size: 0.8em;
     margin-bottom: 5px;
@@ -51,6 +57,59 @@
     left: 0;
     color: #888;
     width: 20px;
+}
+
+.code-preview {
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    overflow: auto;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
+    max-height: 300px;
+    overflow-y: scroll;
+    white-space: pre-wrap;
+    word-break: break-word;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 20px;
+
+    &.error-message {
+        color: red;
+    }
+
+    &.success-message {
+        color: green;
+    }
+
+    &.loading {
+        color: #888;
+    }
+    
+    &.code-copied {
+        color: #888;
+        animation: copyAnimation 0.5s;
+    }
+
+    @keyframes copyAnimation {
+        0% {
+            color: #888;
+        }
+        100% {
+            color: #28a745;
+        }
+    }
+
+    &.code-error {
+        color: red;
+    }
+
 }
 
 .success-message {
