@@ -179,7 +179,8 @@ function formatJsonWithLineNumbers(data) {
     return `<pre>${jsonString}</pre>`;
 }
 
-// Функция для обновления опций сортировки
+// Функция для обновления опций сортировкиf
+
 function updateSortFieldOptions(data) {
     const sortFieldSelect = document.getElementById("sort_field");
     sortFieldSelect.innerHTML = "";
@@ -192,6 +193,13 @@ function updateSortFieldOptions(data) {
             option.textContent = field;
             sortFieldSelect.appendChild(option);
         });
+        // Показываем поле для сортировки, если есть доступные поля
+        document.getElementById("sortFieldLabel").style.display = "block";
+        sortFieldSelect.style.display = "block";
+    } else {
+        // Скрываем поле для сортировки, если нет доступных полей
+        document.getElementById("sortFieldLabel").style.display = "none";
+        sortFieldSelect.style.display = "none";
     }
 }
 
@@ -287,7 +295,6 @@ function handleFileSelect(event) {
     const reader = new FileReader();
     reader.onload = function(e) {
         const content = e.target.result;
-        document.getElementById("convertedContent").value = content; // Загружаем содержимое в текстовое поле
 
         if (file.type === "application/json") {
             try {
