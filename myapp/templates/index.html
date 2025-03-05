@@ -14,9 +14,9 @@
             <div class="card-body">
                 <form id="sortForm">
                     <div class="form-group">
-                        <label for="fileInput" id="fileInputLabel">Перетащите JSON-файл сюда:</label>
+                        <label for="fileInput" id="fileInputLabel">Перетащите JSON или CSV файл сюда:</label>
                         <div id="dropArea" class="border p-3 text-center">
-                            <span id="dropAreaText">Перетащите файл сюда или <input type="file" id="fileInput" accept=".json" style="display: inline;"></span>
+                            <span id="dropAreaText">Перетащите файл сюда или <input type="file" id="fileInput" accept=".json,.csv" style="display: inline;"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -59,8 +59,8 @@
                 </div>
                 <div class="mt-3">
                     <h5>Конвертация файлов</h5>
-                    <button id="convertToJsonBtn" class="btn btn-info">Конвертировать в JSON</button>
-                    <button id="convertToCsvBtn" class="btn btn-info">Конвертировать в CSV</button>
+                    <button id="convertToJsonBtn" class="btn btn-info" style="display: none;">Конвертировать в JSON</button>
+                    <button id="convertToCsvBtn" class="btn btn-info" style="display: none;">Конвертировать в CSV</button>
                     <button id="downloadConvertedBtn" class="btn btn-success" style="display: none;">Скачать конвертированный файл</button>
                     <textarea id="convertedContent" class="form-control" rows="10" placeholder="Содержимое для конвертации..."></textarea>
                 </div>
