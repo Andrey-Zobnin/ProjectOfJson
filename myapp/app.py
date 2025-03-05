@@ -30,6 +30,31 @@ class Sorter:
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(self.data, f, ensure_ascii=False, indent=4)
 
+class Converter:
+    def json_to_csv(self, json_data):
+        csv_content = []
+        headers = json_data[0].keys()
+        csv_content.append(','.join(headers))
+
+        for item in json_data:
+            row = [str(item[header]) for header in headers]
+            csv_content.append(','.join(row))
+
+        return '\n'.join(csv_content)
+
+    def csv_to_json(self, csv_content):
+        json_data = []
+        rows = csv_content.split('\n')
+        headers = rows[0].split(',')
+
+        for row in rows[1:]:
+            if row.strip() == "":
+                continue
+            values = row.split(',')
+            json_data.append(dict(zip(headers, values)))
+
+        return json_data
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -39,7 +64,7 @@ def sort():
     data = request.json
     json_data = data.get("json_data")
     sort_field = data.get("sort_field")
-    sort_value = data.get("sort_value")  # Получаем значение для сортировки
+    sort_value = data.get("sort_value")
     reverse_sort = data.get("reverse_sort") == "yes"
 
     sorter = Sorter()
@@ -55,6 +80,23 @@ def sort():
         return jsonify({"status": "error", "message": sort_result["error"]})
     
     return jsonify({"status": "success", "sorted_data": sorter.data})
+
+@app.route("/convert", methods=["POST"])
+def convert():
+    data = request.json
+    conversion_type = data.get("conversion_type")
+    content = data.get("content")
+
+    converter = Converter()
+
+    if conversion_type == "json_to_csv":
+        csv_content = converter.json_to_csv(json.loads(content))
+        return jsonify({"status": "success", "converted_content": csv_content})
+    elif conversion_type == "csv_to_json":
+        json_data = converter.csv_to_json(content)
+        return jsonify({"status": "success", "converted_content": json.dumps(json_data, ensure_ascii=False, indent=4)})
+    else:
+        return jsonify({"status": "error", "message": "Неподдерживаемый тип конвертации."})
 
 if __name__ == "__main__":
     app.run(debug=True)

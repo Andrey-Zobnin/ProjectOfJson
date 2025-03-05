@@ -14,12 +14,12 @@
             <div class="card-body">
                 <form id="sortForm">
                     <div class="form-group">
-                        <label for="fileInput" id="fileInputLabel">Перетащите JSON-файл сюда:</label>
+                        <label for="fileInput" id="fileInputLabel">Перетащите JSON или CSV файл сюда:</label>
                         <div id="dropArea" class="border p-3 text-center">
-                            <span id="dropAreaText">Перетащите файл сюда или <input type="file" id="fileInput" accept=".json" style="display: inline;"> </span>
+                            <span id="dropAreaText">Перетащите файл сюда или <input type="file" id="fileInput" accept=".json,.csv" style="display: inline;"></span>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="display: none;" id="sortFieldGroup">
                         <label for="sort_field" id="sortFieldLabel">Поле для сортировки:</label>
                         <select class="form-control" id="sort_field" name="sort_field" required>
                             <option value="">Выберите поле</option>
@@ -41,9 +41,6 @@
                     <button type="button" class="btn btn-success" id="downloadBtn" style="display: none;">Скачать отсортированный файл</button>
                 </form>
                 <p id="result" class="mt-3 success-message" style="display: none;">Сортировка завершена</p>
-                <div id="progress" class="mt-3" style="display: none;">
-                    <p>Сортировка в процессе: <span id="progressText">Загрузка...</span></p>
-                </div>
                 <div class="row mt-3">
                     <div class="col-md-6">
                         <h5 id="uploadedContentLabel">Содержимое загруженного файла:</h5>
@@ -59,6 +56,18 @@
                         <div id="sortedContentDisplay" class="line-numbers" style="border: 1px solid #ccc; padding: 10px; max-height: 300px; overflow-y: auto;"></div>
                         <p id="sortedFileInfo" class="mt-2"></p> <!-- Информация об отсортированном файле -->
                     </div>
+                </div>
+                <div class="mt-3">
+                    <h5>Конвертация файлов</h5>
+                    <div class="form-group">
+                        <label for="convertFileInput" id="convertFileInputLabel">Перетащите файл для конвертации сюда:</label>
+                        <div id="convertDropArea" class="border p-3 text-center">
+                            <span id="convertDropAreaText">Перетащите файл сюда или <input type="file" id="convertFileInput" accept=".json,.csv" style="display: inline;"></span>
+                        </div>
+                    </div>
+                    <button id="convertToJsonBtn" class="btn btn-info" style="display: none;">Конвертировать в JSON</button>
+                    <button id="convertToCsvBtn" class="btn btn-info" style="display: none;">Конвертировать в CSV</button>
+                    <button id="downloadConvertedBtn" class="btn btn-success" style="display: none;">Скачать конвертированный файл</button>
                 </div>
             </div>
         </div>
