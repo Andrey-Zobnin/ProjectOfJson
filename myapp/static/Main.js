@@ -122,14 +122,11 @@ async function convertToCsvHandler() {
         body: JSON.stringify({ conversion_type: "json_to_csv", content: jsonContent })
     });
     const result = await response.json();
-    if (result.status === "success") 
-    {
+    if (result.status === "success") {
         document.getElementById("convertedContent").value = result.converted_content;
         document.getElementById("downloadConvertedBtn").style.display = "block";
         document.getElementById("result").textContent = "Конвертация завершена! Тип: CSV";
-    }
-    else 
-    {
+    } else {
         alert(result.message);
     }
 }
