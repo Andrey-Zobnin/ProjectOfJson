@@ -298,6 +298,8 @@ function handleFileSelect(event) {
                 document.getElementById("downloadUploadedBtn").style.display = "block";
                 displayFileInfo(file, jsonData.length);
                 document.getElementById("result").textContent = "Файл загружен успешно! Тип: JSON";
+                document.getElementById("convertToJsonBtn").style.display = "none"; // Скрываем кнопку конвертации в JSON
+                document.getElementById("convertToCsvBtn").style.display = "none"; // Скрываем кнопку конвертации в CSV
             } catch (error) {
                 alert("Ошибка при чтении JSON файла: " + error.message);
             }
