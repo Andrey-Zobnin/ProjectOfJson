@@ -59,6 +59,12 @@
                 </div>
                 <div class="mt-3">
                     <h5>Конвертация файлов</h5>
+                    <div class="form-group">
+                        <label for="convertFileInput" id="convertFileInputLabel">Перетащите файл для конвертации сюда:</label>
+                        <div id="convertDropArea" class="border p-3 text-center">
+                            <span id="convertDropAreaText">Перетащите файл сюда или <input type="file" id="convertFileInput" accept=".json,.csv" style="display: inline;"></span>
+                        </div>
+                    </div>
                     <button id="convertToJsonBtn" class="btn btn-info" style="display: none;">Конвертировать в JSON</button>
                     <button id="convertToCsvBtn" class="btn btn-info" style="display: none;">Конвертировать в CSV</button>
                     <button id="downloadConvertedBtn" class="btn btn-success" style="display: none;">Скачать конвертированный файл</button>
