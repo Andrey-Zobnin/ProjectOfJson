@@ -297,12 +297,15 @@ function handleFileSelect(event) {
                 document.getElementById("copyUploadedBtn").style.display = "block";
                 document.getElementById("downloadUploadedBtn").style.display = "block";
                 displayFileInfo(file, jsonData.length);
+                document.getElementById("result").textContent = "Файл загружен успешно! Тип: JSON";
             } catch (error) {
                 alert("Ошибка при чтении JSON файла: " + error.message);
             }
         } else if (file.type === "text/csv") {
             document.getElementById("convertedContent").value = content; // Загружаем содержимое в текстовое поле
             document.getElementById("convertToJsonBtn").style.display = "block"; // Показываем кнопку конвертации в JSON
+            document.getElementById("convertToCsvBtn").style.display = "none"; // Скрываем кнопку конвертации в CSV
+            document.getElementById("result").textContent = "Файл загружен успешно! Тип: CSV";
         } else {
             alert("Неподдерживаемый формат файла. Пожалуйста, загрузите JSON или CSV файл.");
         }
