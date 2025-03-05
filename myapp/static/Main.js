@@ -83,31 +83,48 @@ function convertCsvToJson(csvContent) {
 }
 
 // Обработчик конвертации в JSON
-function convertToJsonHandler() {
+async function convertToJsonHandler() {
     const csvContent = document.getElementById("convertedContent").value;
     if (!csvContent) {
         alert("Нет данных для конвертации.");
         return;
     }
-    const jsonData = convertCsvToJson(csvContent);
-    document.getElementById("convertedContent").value = JSON.stringify(jsonData, null, 2);
-    document.getElementById("downloadConvertedBtn").style.display = "block";
+    const response = await fetch("/convert", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ conversion_type: "csv_to_json", content: csvContent })
+    });
+    const result = await response.json();
+    if (result.status === "success") {
+        document.getElementById("convertedContent").value = result.converted_content;
+        document.getElementById("downloadConvertedBtn").style.display = "block";
+    } else {
+        alert(result.message);
+    }
 }
 
 // Обработчик конвертации в CSV
-function convertToCsvHandler() {
+async function convertToCsvHandler() {
     const jsonContent = document.getElementById("convertedContent").value;
     if (!jsonContent) {
         alert("Нет данных для конвертации.");
         return;
     }
-    try {
-        const jsonData = JSON.parse(jsonContent);
-        const csvContent = convertJsonToCsv(jsonData);
-        document.getElementById("convertedContent").value = csvContent;
+    const response = await fetch("/convert", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ conversion_type: "json_to_csv", content: jsonContent })
+    });
+    const result = await response.json();
+    if (result.status === "success") {
+        document.getElementById("convertedContent").value = result.converted_content;
         document.getElementById("downloadConvertedBtn").style.display = "block";
-    } catch (error) {
-        alert("Ошибка при парсинге JSON: " + error.message);
+    } else {
+        alert(result.message);
     }
 }
 
