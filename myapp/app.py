@@ -31,13 +31,29 @@ class Sorter:
             json.dump(self.data, f, ensure_ascii=False, indent=4)
 
 class Converter:
-    def json_to_csv(self, json_data, filename):
-        with open(filename, 'w', encoding='utf-8') as f:
-            for item in json_data:
-                f.write(','.join(str(value) for value in item.values()) + '\n')
-    def csv_to_json(self, csv_data, filename):
-        with open(filename, 'w', encoding='utf-8') as f:
-            f.write('[' + '\n'.join(json.dumps(item) for item in csv_data) + '\n]')
+    def json_to_csv(self, json_data):
+        csv_content = []
+        headers = json_data[0].keys()
+        csv_content.append(','.join(headers))
+
+        for item in json_data:
+            row = [str(item[header]) for header in headers]
+            csv_content.append(','.join(row))
+
+        return '\n'.join(csv_content)
+
+    def csv_to_json(self, csv_content):
+        json_data = []
+        rows = csv_content.split('\n')
+        headers = rows[0].split(',')
+
+        for row in rows[1:]:
+            if row.strip() == "":
+                continue
+            values = row.split(',')
+            json_data.append(dict(zip(headers, values)))
+
+        return json_data
     def json_to_xml(self, json_data, filename):
         # TODO: Implement JSON to XML conversion
         pass
