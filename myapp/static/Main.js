@@ -30,6 +30,17 @@ document.getElementById("reverse_sort").addEventListener("change", function () {
     }
 });
 
+// Функция для форматирования чисел (добавляет пробелы для выравнивания)
+function formatNumber(num) {
+    if (num < 10) {
+        return '  ' + num; // 2 пробела перед числом
+    } else if (num < 100) {
+        return ' ' + num; // 1 пробел перед числом
+    } else {
+        return num.toString(); // без пробелов
+    }
+}
+
 // Функция для скачивания отсортированного файла
 function downloadSortedFile() {
     const sortedContent = document.getElementById("sortedContentDisplay").innerText;
@@ -112,7 +123,15 @@ function displayFileInfo(file, lineCount) {
 
 // Функция для форматирования JSON с номерами строк
 function formatJsonWithLineNumbers(data) {
-    const jsonString = JSON.stringify(data, null, 2);
+    const formattedData = data.map(item => {
+        return {
+            ...item,
+            age: formatNumber(item.age),
+            salary: formatNumber(item.salary),
+            experience: formatNumber(item.experience)
+        };
+    });
+    const jsonString = JSON.stringify(formattedData, null, 2);
     return jsonString.split('\n').map(line => `<div>${line}</div>`).join('');
 }
 
@@ -152,7 +171,7 @@ function updateSecondFieldOptions(data) {
 async function sortJson() {
     const sortField = document.getElementById("sort_field").value;
     const sortValue = document.getElementById("sort_value").value;
-    const reverseSort = document.getElementById("reverse_sort").value === "yes";
+    const reverseSort = document.getElementById("reverse_sort").value === "yes"; // true/false
     const dependencyType = document.getElementById("dependency_type").value;
     const secondField = document.getElementById("second_field").value;
 
@@ -164,7 +183,7 @@ async function sortJson() {
     const requestBody = {
         json_data: jsonData,
         sort_field: sortField,
-        reverse_sort: reverseSort ? "yes" : "no",
+        reverse_sort: reverseSort, // передаем true/false
         dependency_type: dependencyType,
         second_field: secondField
     };

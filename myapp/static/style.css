@@ -35,8 +35,10 @@
 }
 
 .line-numbers {
-    counter-reset: line;
-    font-family: monospace;
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto; 
 }
 
 .line-numbers div {

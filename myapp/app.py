@@ -28,37 +28,37 @@ class Sorter:
         except TypeError as e:
             return {"error": f"Ошибка при сортировке: {e}"}
 
-    def sort_by_direct_dependency(self, key1, key2):
+    def sort_by_direct_dependency(self, key1, key2, reverse=False):
         if self.data is None:
             return {"error": "Нет данных для сортировки."}
         try:
-            self.data = sorted(self.data, key=lambda x: x.get(key1) * x.get(key2), reverse=False)
+            self.data = sorted(self.data, key=lambda x: x.get(key1) * x.get(key2), reverse=reverse)
         except KeyError:
             return {"error": f"Поле '{key1}' или '{key2}' не найдено в данных."}
         except TypeError as e:
             return {"error": f"Ошибка при сортировке: {e}"}
 
-    def sort_by_inverse_dependency(self, key1, key2):
+    def sort_by_inverse_dependency(self, key1, key2, reverse=False):
         if self.data is None:
             return {"error": "Нет данных для сортировки."}
         try:
-            self.data = sorted(self.data, key=lambda x: -x.get(key1) * x.get(key2), reverse=False)
+            self.data = sorted(self.data, key=lambda x: -x.get(key1) * x.get(key2), reverse=reverse)
         except KeyError:
             return {"error": f"Поле '{key1}' или '{key2}' не найдено в данных."}
         except TypeError as e:
             return {"error": f"Ошибка при сортировке: {e}"}
 
-    def sort_by_proportional_dependency(self, key1, key2):
+    def sort_by_proportional_dependency(self, key1, key2, reverse=False):
         if self.data is None:
             return {"error": "Нет данных для сортировки."}
         try:
-            self.data = sorted(self.data, key=lambda x: x.get(key1) / (x.get(key2) + 1e-10), reverse=False)
+            self.data = sorted(self.data, key=lambda x: x.get(key1) / (x.get(key2) + 1e-10), reverse=reverse)
         except KeyError:
             return {"error": f"Поле '{key1}' или '{key2}' не найдено в данных."}
         except TypeError as e:
             return {"error": f"Ошибка при сортировке: {e}"}
 
-    def sort_by_correlation(self, key1, key2):
+    def sort_by_correlation(self, key1, key2, reverse=False):
         if self.data is None:
             return {"error": "Нет данных для сортировки."}
         try:
@@ -66,7 +66,7 @@ class Sorter:
                 [item[key1] for item in self.data if key1 in item],
                 [item[key2] for item in self.data if key2 in item]
             )
-            self.data = sorted(self.data, key=lambda x: correlation, reverse=False)
+            self.data = sorted(self.data, key=lambda x: correlation, reverse=reverse)
         except KeyError:
             return {"error": f"Поле '{key1}' или '{key2}' не найдено в данных."}
         except TypeError as e:
@@ -93,13 +93,13 @@ def sort():
         sorter.data = [item for item in sorter.data if str(item.get(sort_field)) == str(sort_value)]
 
     if dependency_type == "direct":
-        sorter.sort_by_direct_dependency(sort_field, second_field)
+        sorter.sort_by_direct_dependency(sort_field, second_field, reverse_sort)
     elif dependency_type == "inverse":
-        sorter.sort_by_inverse_dependency(sort_field, second_field)
+        sorter.sort_by_inverse_dependency(sort_field, second_field, reverse_sort)
     elif dependency_type == "proportional":
-        sorter.sort_by_proportional_dependency(sort_field, second_field)
+        sorter.sort_by_proportional_dependency(sort_field, second_field, reverse_sort)
     elif dependency_type == "correlation":
-        sorter.sort_by_correlation(sort_field, second_field)
+        sorter.sort_by_correlation(sort_field, second_field, reverse_sort)
     else:
         sorter.sort(sort_field, reverse_sort)
 
