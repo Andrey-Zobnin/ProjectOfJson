@@ -31,11 +31,26 @@
                             <option value="no">По возрастанию</option>
                             <option value="yes">По убыванию</option>
                             <option value="value">По значению</option>
+                            <option value="dependency">По зависимости</option>
                         </select>
                     </div>
                     <div class="form-group" id="valueInputGroup" style="display: none;">
                         <label for="sort_value" id="sortValueLabel">Введите значение для сортировки:</label>
                         <input type="text" class="form-control" id="sort_value" name="sort_value">
+                    </div>
+                    <div class="form-group" id="dependencyInputGroup" style="display: none;">
+                        <label for="dependency_type" id="dependencyTypeLabel">Тип зависимости:</label>
+                        <select class="form-control" id="dependency_type" name="dependency_type">
+                            <option value="none">Не выбрано</option>
+                            <option value="direct">Прямая зависимость</option>
+                            <option value="inverse">Обратная зависимость</option>
+                            <option value="proportional">Пропорциональная зависимость</option>
+                            <option value="correlation">Корреляция</option>
+                        </select>
+                        <label for="second_field" id="secondFieldLabel">Второе поле для сортировки:</label>
+                        <select class="form-control" id="second_field" name="second_field">
+                            <option value="">Выберите второе поле</option>
+                        </select>
                     </div>
                     <button type="button" class="btn btn-primary" id="sortBtn">Сортировать</button>
                     <button type="button" class="btn btn-success" id="downloadBtn" style="display: none;">Скачать отсортированный файл</button>

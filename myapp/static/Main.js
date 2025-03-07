@@ -1,23 +1,32 @@
 let jsonData = null;
 
+// Скрываем кнопки копирования и скачивания при загрузке страницы
 document.getElementById("copyUploadedBtn").style.display = "none";
 document.getElementById("downloadUploadedBtn").style.display = "none";
 document.getElementById("copySortedBtn").style.display = "none";
 document.getElementById("downloadSortedBtn").style.display = "none";
 
+// Обработчики событий для выбора файла, сортировки и скачивания
 document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 document.getElementById("sortBtn").addEventListener("click", sortJson);
 document.getElementById("downloadUploadedBtn").addEventListener("click", downloadUploadedFile);
 document.getElementById("downloadSortedBtn").addEventListener("click", downloadSortedFile);
 
-// Управление отображением поля ввода значения
-document.getElementById("reverse_sort").addEventListener("change", function() {
+// Управление отображением полей ввода значения и зависимости
+document.getElementById("reverse_sort").addEventListener("change", function () {
     const valueInputGroup = document.getElementById("valueInputGroup");
+    const dependencyInputGroup = document.getElementById("dependencyInputGroup");
+
     if (this.value === "value") {
-        valueInputGroup.style.display = "block"; // Показываем поле для ввода значения
+        valueInputGroup.style.display = "block";
+        dependencyInputGroup.style.display = "none";
+    } else if (this.value === "dependency") {
+        valueInputGroup.style.display = "none";
+        dependencyInputGroup.style.display = "block";
+        updateSecondFieldOptions(jsonData); // Обновляем список полей для второго признака
     } else {
-        valueInputGroup.style.display = "none"; // Скрываем поле для ввода значения
-        document.getElementById("sort_value").value = ""; // Очищаем поле
+        valueInputGroup.style.display = "none";
+        dependencyInputGroup.style.display = "none";
     }
 });
 
@@ -70,11 +79,12 @@ async function handleFileSelect(event) {
                 jsonData = JSON.parse(e.target.result);
                 document.getElementById("contentDisplay").innerHTML = formatJsonWithLineNumbers(jsonData);
                 document.getElementById("result").textContent = "Файл загружен успешно!";
-                updateSortFieldOptions(jsonData);
+                updateSortFieldOptions(jsonData); // Обновляем список полей для сортировки
 
                 // Отображаем информацию о загруженном файле
                 displayFileInfo(file, jsonData.length);
 
+                // Показываем кнопки копирования и скачивания
                 document.getElementById("copyUploadedBtn").style.display = "block";
                 document.getElementById("downloadUploadedBtn").style.display = "block";
 
@@ -122,11 +132,29 @@ function updateSortFieldOptions(data) {
     }
 }
 
+// Функция для обновления второго поля для сортировки по зависимости
+function updateSecondFieldOptions(data) {
+    const secondFieldSelect = document.getElementById("second_field");
+    secondFieldSelect.innerHTML = "";
+
+    if (data && data.length > 0) {
+        const fields = Object.keys(data[0]);
+        fields.forEach(field => {
+            const option = document.createElement("option");
+            option.value = field;
+            option.textContent = field;
+            secondFieldSelect.appendChild(option);
+        });
+    }
+}
+
 // Функция для сортировки JSON
 async function sortJson() {
     const sortField = document.getElementById("sort_field").value;
-    const sortValue = document.getElementById("sort_value").value; // Получаем значение
+    const sortValue = document.getElementById("sort_value").value;
     const reverseSort = document.getElementById("reverse_sort").value === "yes";
+    const dependencyType = document.getElementById("dependency_type").value;
+    const secondField = document.getElementById("second_field").value;
 
     if (!jsonData || jsonData.length === 0) {
         document.getElementById("result").textContent = "Пожалуйста, загрузите JSON-файл сначала.";
@@ -136,12 +164,14 @@ async function sortJson() {
     const requestBody = {
         json_data: jsonData,
         sort_field: sortField,
-        reverse_sort: reverseSort ? "yes" : "no"
+        reverse_sort: reverseSort ? "yes" : "no",
+        dependency_type: dependencyType,
+        second_field: secondField
     };
 
     // Если выбрана сортировка по значению, добавляем значение в запрос
     if (document.getElementById("reverse_sort").value === "value") {
-        requestBody.sort_value = sortValue; // Добавляем значение для сортировки
+        requestBody.sort_value = sortValue;
     }
 
     const response = await fetch("/sort", {
@@ -158,10 +188,10 @@ async function sortJson() {
     } else {
         document.getElementById("sortedContentDisplay").innerHTML = formatJsonWithLineNumbers(result.sorted_data);
         document.getElementById("copySortedBtn").style.display = "block";
-        document.getElementById("downloadSortedBtn").style.display = "block"; 
+        document.getElementById("downloadSortedBtn").style.display = "block";
         document.getElementById("result").textContent = "Сортировка завершена!";
 
-        // add downloaded file size and line count 
+        // Добавляем информацию о размере и количестве строк отсортированного файла
         const sortedFileSize = new Blob([JSON.stringify(result.sorted_data)]).size; // Размер отсортированных данных
         const sortedLineCount = result.sorted_data.length; // Количество строк
         const sortedFileInfo = document.getElementById("sortedFileInfo");
@@ -191,4 +221,4 @@ function copySortedContent() {
     }).catch(err => {
         console.error("Ошибка при копировании: ", err);
     });
-}     
+}

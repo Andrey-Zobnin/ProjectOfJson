@@ -1,6 +1,8 @@
 import os
 from flask import Flask, render_template, request, jsonify
 import json
+import numpy as np
+from scipy.stats import pearsonr
 
 app = Flask(__name__)
 
@@ -17,7 +19,7 @@ class Sorter:
         try:
             self.data = [item for item in self.data if isinstance(item, dict)]
             if value:
-                self.data = [item for item in self.data if item.get(field) == value]  # Фильтрация по значению
+                self.data = [item for item in self.data if item.get(field) == value]
             if field is None and self.data:
                 field = list(self.data[0].keys())[0]
             self.data = sorted(self.data, key=lambda x: x.get(field), reverse=reverse)
@@ -26,9 +28,49 @@ class Sorter:
         except TypeError as e:
             return {"error": f"Ошибка при сортировке: {e}"}
 
-    def write_to_file(self, filename):
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(self.data, f, ensure_ascii=False, indent=4)
+    def sort_by_direct_dependency(self, key1, key2):
+        if self.data is None:
+            return {"error": "Нет данных для сортировки."}
+        try:
+            self.data = sorted(self.data, key=lambda x: x.get(key1) * x.get(key2), reverse=False)
+        except KeyError:
+            return {"error": f"Поле '{key1}' или '{key2}' не найдено в данных."}
+        except TypeError as e:
+            return {"error": f"Ошибка при сортировке: {e}"}
+
+    def sort_by_inverse_dependency(self, key1, key2):
+        if self.data is None:
+            return {"error": "Нет данных для сортировки."}
+        try:
+            self.data = sorted(self.data, key=lambda x: -x.get(key1) * x.get(key2), reverse=False)
+        except KeyError:
+            return {"error": f"Поле '{key1}' или '{key2}' не найдено в данных."}
+        except TypeError as e:
+            return {"error": f"Ошибка при сортировке: {e}"}
+
+    def sort_by_proportional_dependency(self, key1, key2):
+        if self.data is None:
+            return {"error": "Нет данных для сортировки."}
+        try:
+            self.data = sorted(self.data, key=lambda x: x.get(key1) / (x.get(key2) + 1e-10), reverse=False)
+        except KeyError:
+            return {"error": f"Поле '{key1}' или '{key2}' не найдено в данных."}
+        except TypeError as e:
+            return {"error": f"Ошибка при сортировке: {e}"}
+
+    def sort_by_correlation(self, key1, key2):
+        if self.data is None:
+            return {"error": "Нет данных для сортировки."}
+        try:
+            correlation, _ = pearsonr(
+                [item[key1] for item in self.data if key1 in item],
+                [item[key2] for item in self.data if key2 in item]
+            )
+            self.data = sorted(self.data, key=lambda x: correlation, reverse=False)
+        except KeyError:
+            return {"error": f"Поле '{key1}' или '{key2}' не найдено в данных."}
+        except TypeError as e:
+            return {"error": f"Ошибка при сортировке: {e}"}
 
 @app.route("/")
 def index():
@@ -39,22 +81,31 @@ def sort():
     data = request.json
     json_data = data.get("json_data")
     sort_field = data.get("sort_field")
-    sort_value = data.get("sort_value")  # Получаем значение для сортировки
+    sort_value = data.get("sort_value")
     reverse_sort = data.get("reverse_sort") == "yes"
+    dependency_type = data.get("dependency_type")
+    second_field = data.get("second_field")
 
     sorter = Sorter()
     sorter.set_data(json_data)
 
-    # Если указано значение для сортировки, фильтруем данные
     if sort_value:
         sorter.data = [item for item in sorter.data if str(item.get(sort_field)) == str(sort_value)]
 
-    sort_result = sorter.sort(sort_field, reverse_sort)
+    if dependency_type == "direct":
+        sorter.sort_by_direct_dependency(sort_field, second_field)
+    elif dependency_type == "inverse":
+        sorter.sort_by_inverse_dependency(sort_field, second_field)
+    elif dependency_type == "proportional":
+        sorter.sort_by_proportional_dependency(sort_field, second_field)
+    elif dependency_type == "correlation":
+        sorter.sort_by_correlation(sort_field, second_field)
+    else:
+        sorter.sort(sort_field, reverse_sort)
 
-    if isinstance(sort_result, dict) and "error" in sort_result:
-        return jsonify({"status": "error", "message": sort_result["error"]})
-    
-    return jsonify({"status": "success", "sorted_data": sorter.data})
+    sort_result = sorter.data
+
+    return jsonify({"status": "success", "sorted_data": sort_result})
 
 if __name__ == "__main__":
     app.run(debug=True)
