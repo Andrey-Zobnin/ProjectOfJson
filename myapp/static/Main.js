@@ -171,7 +171,7 @@ function updateSecondFieldOptions(data) {
 async function sortJson() {
     const sortField = document.getElementById("sort_field").value;
     const sortValue = document.getElementById("sort_value").value;
-    const reverseSort = document.getElementById("reverse_sort").value === "yes"; // true/false
+    const reverseSort = document.getElementById("reverse_sort").value === "yes";
     const dependencyType = document.getElementById("dependency_type").value;
     const secondField = document.getElementById("second_field").value;
 
@@ -179,6 +179,15 @@ async function sortJson() {
         document.getElementById("result").textContent = "Пожалуйста, загрузите JSON-файл сначала.";
         return;
     }
+    if (!sortField || !sortValue) {
+        document.getElementById("result").textContent = "Пожалуйста, выберите поле для сортировки.";
+        return;
+    }
+    if (dependencyType === "dependency" &&!secondField) {
+        document.getElementById("result").textContent = "Пожалуйста, выберите поле для зависимости.";
+        return;
+    }
+    
 
     const requestBody = {
         json_data: jsonData,
