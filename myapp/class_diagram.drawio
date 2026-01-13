@@ -1,0 +1,131 @@
+<mxfile host="app.diagrams.net" modified="2026-01-13T19:00:00.000Z" agent="Mozilla/5.0" version="22.1.0">
+  <diagram name="Диаграмма классов" id="class">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Title -->
+        <mxCell id="title" value="DataSort Pro — Диаграмма классов (Backend)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;fontColor=#1e40af;" vertex="1" parent="1">
+          <mxGeometry x="320" y="20" width="450" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- Sorter Class -->
+        <mxCell id="sorter_class" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="120" y="80" width="300" height="380" as="geometry"/>
+        </mxCell>
+        
+        <!-- Class Name -->
+        <mxCell id="sorter_name" value="Sorter" style="text;html=1;strokeColor=none;fillColor=#2563eb;align=center;fontSize=14;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="120" y="80" width="300" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Attributes -->
+        <mxCell id="attrs" value="— data: List[Dict]" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="120" width="280" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- Separator -->
+        <mxCell id="sep1" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#2563eb;" vertex="1" parent="1">
+          <mxGeometry x="120" y="145" width="300" height="8" as="geometry"/>
+        </mxCell>
+        
+        <!-- Methods -->
+        <mxCell id="m1" value="+ __init__()" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="155" width="280" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="m2" value="+ set_data(data: List)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="175" width="280" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="m3" value="+ sort(field, reverse, value)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="195" width="280" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="m4" value="+ natural_sort(field, reverse)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="215" width="280" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="m5" value="+ stable_sort(field, reverse)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="235" width="280" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="m6" value="+ sort_by_direct_dependency(k1, k2, rev)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="255" width="280" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="m7" value="+ sort_by_inverse_dependency(k1, k2, rev)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="275" width="280" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="m8" value="+ sort_by_proportional_dependency(k1, k2, rev)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="295" width="280" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="m9" value="+ sort_by_correlation(k1, k2, rev)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="315" width="280" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="m10" value="+ sort_by_weighted(k1, k2, rev, w1, w2)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="335" width="280" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="m11" value="+ sort_by_percentile(field, reverse)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="355" width="280" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="m12" value="+ sort_by_zscore(field, reverse)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="375" width="280" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="m13" value="+ sort_by_cluster(k1, k2, reverse)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="395" width="280" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="m14" value="— _get_numeric_value(item, key, default)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#64748b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="420" width="280" height="18" as="geometry"/>
+        </mxCell>
+        
+        <!-- Flask App -->
+        <mxCell id="flask_class" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#22c55e;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="500" y="80" width="280" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="flask_name" value="Flask App (app.py)" style="text;html=1;strokeColor=none;fillColor=#22c55e;align=center;fontSize=14;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="500" y="80" width="280" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="sep2" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#22c55e;" vertex="1" parent="1">
+          <mxGeometry x="500" y="115" width="280" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="r1" value="GET  /  → index()" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="510" y="130" width="260" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="r2" value="POST /sort → sort()" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="510" y="150" width="260" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="r3" value="POST /convert → convert()" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="510" y="170" width="260" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="sep3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#22c55e;" vertex="1" parent="1">
+          <mxGeometry x="500" y="195" width="280" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="dep1" value="uses: Sorter, NumPy, SciPy" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#64748b;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="510" y="210" width="260" height="18" as="geometry"/>
+        </mxCell>
+        
+        <!-- Arrow -->
+        <mxCell id="uses" value="uses" style="endArrow=open;html=1;strokeWidth=2;strokeColor=#64748b;dashed=1;" edge="1" parent="1">
+          <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+            <mxPoint x="500" y="180" as="sourcePoint"/>
+            <mxPoint x="420" y="180" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Dependencies -->
+        <mxCell id="deps" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#f59e0b;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="500" y="300" width="280" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="deps_name" value="Зависимости" style="text;html=1;strokeColor=none;fillColor=#f59e0b;align=center;fontSize=14;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="500" y="300" width="280" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="d1" value="• Flask — веб-фреймворк" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="510" y="335" width="260" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="d2" value="• NumPy — работа с массивами" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="510" y="355" width="260" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="d3" value="• SciPy — статистика, кластеризация" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="510" y="375" width="260" height="18" as="geometry"/>
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

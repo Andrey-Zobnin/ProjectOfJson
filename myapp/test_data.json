@@ -1,0 +1,12 @@
+[
+  {"id": 1, "name": "Иван Петров", "age": 28, "salary": 75000, "department": "IT"},
+  {"id": 2, "name": "Мария Сидорова", "age": 34, "salary": 92000, "department": "HR"},
+  {"id": 3, "name": "Алексей Козлов", "age": 25, "salary": 58000, "department": "IT"},
+  {"id": 4, "name": "Елена Новикова", "age": 41, "salary": 120000, "department": "Finance"},
+  {"id": 5, "name": "Дмитрий Волков", "age": 31, "salary": 85000, "department": "IT"},
+  {"id": 6, "name": "Анна Морозова", "age": 29, "salary": 67000, "department": "Marketing"},
+  {"id": 7, "name": "Сергей Лебедев", "age": 38, "salary": 105000, "department": "Finance"},
+  {"id": 8, "name": "Ольга Соколова", "age": 27, "salary": 62000, "department": "HR"},
+  {"id": 9, "name": "Николай Попов", "age": 45, "salary": 135000, "department": "Management"},
+  {"id": 10, "name": "Татьяна Кузнецова", "age": 33, "salary": 78000, "department": "Marketing"}
+]
