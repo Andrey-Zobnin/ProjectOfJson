@@ -3,79 +3,329 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сортировщик JSON</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>DataSort Pro — Универсальный сортировщик данных</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center" id="title">Сортировщик JSON</h1>
-        <div class="card">
-            <div class="card-body">
-                <form id="sortForm">
-                    <div class="form-group">
-                        <label for="fileInput" id="fileInputLabel">Перетащите JSON-файл сюда:</label>
-                        <div id="dropArea" class="border p-3 text-center">
-                            <span id="dropAreaText">Перетащите файл сюда или <input type="file" id="fileInput" accept=".json" style="display: inline;"> </span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="sort_field" id="sortFieldLabel">Поле для сортировки:</label>
-                        <select class="form-control" id="sort_field" name="sort_field" required>
-                            <option value="">Выберите поле</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label id="sortByLabel">Сортировать по:</label>
-                        <select class="form-control" id="reverse_sort" name="reverse_sort">
-                            <option value="no">По возрастанию</option>
-                            <option value="yes">По убыванию</option>
-                            <option value="value">По значению</option>
-                            <option value="dependency">По зависимости</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="valueInputGroup" style="display: none;">
-                        <label for="sort_value" id="sortValueLabel">Введите значение для сортировки:</label>
-                        <input type="text" class="form-control" id="sort_value" name="sort_value">
-                    </div>
-                    <div class="form-group" id="dependencyInputGroup" style="display: none;">
-                        <label for="dependency_type" id="dependencyTypeLabel">Тип зависимости:</label>
-                        <select class="form-control" id="dependency_type" name="dependency_type">
-                            <option value="none">Не выбрано</option>
-                            <option value="direct">Прямая зависимость</option>
-                            <option value="inverse">Обратная зависимость</option>
-                            <option value="proportional">Пропорциональная зависимость</option>
-                            <option value="correlation">Корреляция</option>
-                        </select>
-                        <label for="second_field" id="secondFieldLabel">Второе поле для сортировки:</label>
-                        <select class="form-control" id="second_field" name="second_field">
-                            <option value="">Выберите второе поле</option>
-                        </select>
-                    </div>
-                    <button type="button" class="btn btn-primary" id="sortBtn">Сортировать</button>
-                    <button type="button" class="btn btn-success" id="downloadBtn" style="display: none;">Скачать отсортированный файл</button>
-                </form>
-                <p id="result" class="mt-3 success-message" style="display: none;">Сортировка завершена</p>
-                <div id="progress" class="mt-3" style="display: none;">
-                    <p>Сортировка в процессе: <span id="progressText">Загрузка...</span></p>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <h5 id="uploadedContentLabel">Содержимое загруженного файла:</h5>
-                        <button type="button" class="copy-btn btn" id="copyUploadedBtn">Скопировать содержимое загруженного файла</button>
-                        <button type="button" class="copy-btn btn" id="downloadUploadedBtn">Скачать загруженный файл</button>
-                        <div id="contentDisplay" class="line-numbers" style="border: 1px solid #ccc; padding: 10px; max-height: 300px; overflow-y: auto;"></div>
-                        <p id="uploadedFileInfo" class="mt-2"></p> <!-- Информация о загруженном файле -->
-                    </div>
-                    <div class="col-md-6">
-                        <h5 id="sortedContentLabel">Содержимое отсортированного файла:</h5>
-                        <button type="button" class="copy-btn btn" id="copySortedBtn" style="display: none;">Скопировать содержимое отсортированного файла</button>
-                        <button type="button" class="copy-btn btn" id="downloadSortedBtn" style="display: none;">Скачать отсортированный файл</button>
-                        <div id="sortedContentDisplay" class="line-numbers" style="border: 1px solid #ccc; padding: 10px; max-height: 300px; overflow-y: auto;"></div>
-                        <p id="sortedFileInfo" class="mt-2"></p> <!-- Информация об отсортированном файле -->
-                    </div>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-sort-amount-down"></i>
+                <span>DataSort Pro</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-section="sort">
+                    <i class="fas fa-sort"></i>
+                    <span>Сортировка</span>
+                </a>
+                <a href="#" class="nav-item" data-section="convert">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Конвертация</span>
+                </a>
+                <a href="#" class="nav-item" data-section="history">
+                    <i class="fas fa-history"></i>
+                    <span>История</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="format-badges">
+                    <span class="badge json">JSON</span>
+                    <span class="badge csv">CSV</span>
+                    <span class="badge xml">XML</span>
                 </div>
             </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Универсальный сортировщик данных</h1>
+                <p class="subtitle">Загрузите файл JSON, CSV или XML для обработки</p>
+            </header>
+
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-zone-content">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Перетащите файл сюда</h3>
+                        <p>или нажмите для выбора</p>
+                        <div class="supported-formats">
+                            <span><i class="fas fa-file-code"></i> JSON</span>
+                            <span><i class="fas fa-file-csv"></i> CSV</span>
+                            <span><i class="fas fa-file-alt"></i> XML</span>
+                        </div>
+                        <input type="file" id="fileInput" accept=".json,.csv,.xml" hidden>
+                    </div>
+                </div>
+                <div class="file-info" id="fileInfo" style="display: none;">
+                    <div class="file-icon">
+                        <i class="fas fa-file"></i>
+                    </div>
+                    <div class="file-details">
+                        <span class="file-name" id="fileName"></span>
+                        <span class="file-meta" id="fileMeta"></span>
+                    </div>
+                    <button class="btn-icon" id="removeFile" title="Удалить файл">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Sort Section -->
+            <section class="sort-section" id="sortSection" style="display: none;">
+                <!-- Recommendations -->
+                <div class="recommendations-card" id="recommendationsCard" style="display: none;">
+                    <div class="recommendations-header">
+                        <i class="fas fa-magic"></i>
+                        <span>Рекомендуемые параметры</span>
+                        <button class="btn-close-rec" id="closeRecommendations"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="recommendations-body" id="recommendationsBody">
+                        <!-- Recommendations will be inserted here -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-sliders-h"></i> Параметры сортировки</h2>
+                        <button class="btn btn-recommend" id="analyzeBtn">
+                            <i class="fas fa-lightbulb"></i> Подобрать параметры
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="sortField">Поле для сортировки</label>
+                                <select id="sortField" class="form-select">
+                                    <option value="">Выберите поле</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="sortOrder">Порядок сортировки</label>
+                                <select id="sortOrder" class="form-select">
+                                    <option value="asc">По возрастанию</option>
+                                    <option value="desc">По убыванию</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="algorithm">Алгоритм сортировки</label>
+                                <select id="algorithm" class="form-select">
+                                    <optgroup label="Базовые">
+                                        <option value="standard">Стандартная</option>
+                                        <option value="natural">Естественная (для строк с числами)</option>
+                                        <option value="stable">Стабильная</option>
+                                    </optgroup>
+                                    <optgroup label="По зависимости">
+                                        <option value="direct">Прямая зависимость (A × B)</option>
+                                        <option value="inverse">Обратная зависимость (-A × B)</option>
+                                        <option value="proportional">Пропорциональная (A / B)</option>
+                                        <option value="correlation">Корреляция Пирсона</option>
+                                    </optgroup>
+                                    <optgroup label="Специальные">
+                                        <option value="weighted">Взвешенная сортировка</option>
+                                        <option value="percentile">По перцентилям</option>
+                                        <option value="zscore">По Z-оценке</option>
+                                        <option value="cluster">Кластерная сортировка</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="form-group" id="secondFieldGroup" style="display: none;">
+                                <label for="secondField">Второе поле</label>
+                                <select id="secondField" class="form-select">
+                                    <option value="">Выберите поле</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Filter Section -->
+                        <div class="filter-section">
+                            <div class="filter-header" id="filterToggle">
+                                <i class="fas fa-filter"></i>
+                                <span>Фильтрация данных</span>
+                                <i class="fas fa-chevron-down toggle-icon"></i>
+                            </div>
+                            <div class="filter-body" id="filterBody" style="display: none;">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="filterField">Поле для фильтрации</label>
+                                        <select id="filterField" class="form-select">
+                                            <option value="">Не фильтровать</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="filterValue">Значение</label>
+                                        <input type="text" id="filterValue" class="form-input" placeholder="Введите значение">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" id="sortBtn">
+                                <i class="fas fa-sort"></i> Сортировать
+                            </button>
+                            <button class="btn btn-secondary" id="resetBtn">
+                                <i class="fas fa-undo"></i> Сбросить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Convert Section -->
+            <section class="convert-section" id="convertSection" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-exchange-alt"></i> Конвертация формата</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="convert-grid">
+                            <div class="convert-card" data-from="json" data-to="csv">
+                                <div class="convert-card-icon">
+                                    <span class="format-from">JSON</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                    <span class="format-to">CSV</span>
+                                </div>
+                                <div class="convert-card-title">JSON → CSV</div>
+                                <div class="convert-card-desc">Для работы в Excel и таблицах</div>
+                            </div>
+                            <div class="convert-card" data-from="json" data-to="xml">
+                                <div class="convert-card-icon">
+                                    <span class="format-from">JSON</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                    <span class="format-to">XML</span>
+                                </div>
+                                <div class="convert-card-title">JSON → XML</div>
+                                <div class="convert-card-desc">Для интеграции с системами</div>
+                            </div>
+                            <div class="convert-card" data-from="csv" data-to="json">
+                                <div class="convert-card-icon">
+                                    <span class="format-from">CSV</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                    <span class="format-to">JSON</span>
+                                </div>
+                                <div class="convert-card-title">CSV → JSON</div>
+                                <div class="convert-card-desc">Для веб-приложений и API</div>
+                            </div>
+                            <div class="convert-card" data-from="csv" data-to="xml">
+                                <div class="convert-card-icon">
+                                    <span class="format-from">CSV</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                    <span class="format-to">XML</span>
+                                </div>
+                                <div class="convert-card-title">CSV → XML</div>
+                                <div class="convert-card-desc">Структурированный формат</div>
+                            </div>
+                            <div class="convert-card" data-from="xml" data-to="json">
+                                <div class="convert-card-icon">
+                                    <span class="format-from">XML</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                    <span class="format-to">JSON</span>
+                                </div>
+                                <div class="convert-card-title">XML → JSON</div>
+                                <div class="convert-card-desc">Современный формат данных</div>
+                            </div>
+                            <div class="convert-card" data-from="xml" data-to="csv">
+                                <div class="convert-card-icon">
+                                    <span class="format-from">XML</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                    <span class="format-to">CSV</span>
+                                </div>
+                                <div class="convert-card-title">XML → CSV</div>
+                                <div class="convert-card-desc">Простой табличный формат</div>
+                            </div>
+                        </div>
+                        
+                        <div class="convert-status" id="convertStatus" style="display: none;">
+                            <div class="status-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="status-text">
+                                <span class="status-title" id="convertStatusTitle">Конвертация выполнена</span>
+                                <span class="status-desc" id="convertStatusDesc">JSON → CSV</span>
+                            </div>
+                            <button class="btn btn-primary btn-sm" id="downloadConverted">
+                                <i class="fas fa-download"></i> Скачать
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Section -->
+            <section class="history-section" id="historySection" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-history"></i> История загрузок</h2>
+                        <button class="btn btn-secondary btn-sm" id="clearHistory">
+                            <i class="fas fa-trash"></i> Очистить
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="history-list" id="historyList">
+                            <div class="history-empty">
+                                <i class="fas fa-inbox"></i>
+                                <p>История пуста</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-grid">
+                    <div class="result-panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-file-import"></i> Исходные данные</h3>
+                            <div class="panel-actions">
+                                <button class="btn-icon" id="copyOriginal" title="Копировать">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button class="btn-icon" id="downloadOriginal" title="Скачать">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="panel-stats" id="originalStats"></div>
+                        <div class="panel-content">
+                            <pre id="originalContent"></pre>
+                        </div>
+                    </div>
+                    <div class="result-panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-file-export"></i> Результат</h3>
+                            <div class="panel-actions">
+                                <button class="btn-icon" id="copyResult" title="Копировать">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button class="btn-icon" id="downloadResult" title="Скачать">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="panel-stats" id="resultStats"></div>
+                        <div class="panel-content">
+                            <pre id="resultContent"></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span id="loadingText">Обработка данных...</span>
         </div>
     </div>
 

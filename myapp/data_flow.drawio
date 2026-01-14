@@ -1,0 +1,113 @@
+<mxfile host="app.diagrams.net" modified="2026-01-13T19:00:00.000Z" agent="Mozilla/5.0" version="22.1.0">
+  <diagram name="Поток данных" id="flow">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Title -->
+        <mxCell id="title" value="DataSort Pro — Поток данных" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;fontColor=#1e40af;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="300" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- User -->
+        <mxCell id="user" value="👤&#xa;Пользователь" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0e7ff;strokeColor=#6366f1;strokeWidth=2;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="200" width="100" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Upload -->
+        <mxCell id="upload" value="📁 Загрузка&#xa;файла" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="240" y="100" width="100" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Parse -->
+        <mxCell id="parse" value="🔍 Парсинг&#xa;JSON/CSV/XML" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#f59e0b;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="400" y="100" width="100" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Display -->
+        <mxCell id="display" value="📊 Отображение&#xa;данных" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcfce7;strokeColor=#22c55e;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="560" y="100" width="100" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Sort -->
+        <mxCell id="sort" value="⚙️ Сортировка&#xa;(Backend)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fee2e2;strokeColor=#ef4444;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="400" y="200" width="100" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Convert -->
+        <mxCell id="convert" value="🔄 Конвертация&#xa;формата" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e8ff;strokeColor=#a855f7;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="400" y="300" width="100" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Result -->
+        <mxCell id="result" value="✅ Результат" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcfce7;strokeColor=#22c55e;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="560" y="200" width="100" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Download -->
+        <mxCell id="download" value="💾 Скачивание" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="720" y="200" width="100" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- History -->
+        <mxCell id="history" value="📜 История&#xa;(localStorage)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f5f9;strokeColor=#64748b;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="240" y="300" width="100" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Arrows -->
+        <mxCell id="a1" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#2563eb;" edge="1" parent="1" source="user" target="upload">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a2" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#f59e0b;" edge="1" parent="1" source="upload" target="parse">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a3" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#22c55e;" edge="1" parent="1" source="parse" target="display">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a4" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#ef4444;" edge="1" parent="1" source="display" target="sort">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a5" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#22c55e;" edge="1" parent="1" source="sort" target="result">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a6" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#2563eb;" edge="1" parent="1" source="result" target="download">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a7" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#a855f7;" edge="1" parent="1" source="display" target="convert">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a8" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#a855f7;" edge="1" parent="1" source="convert" target="result">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a9" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#64748b;dashed=1;" edge="1" parent="1" source="upload" target="history">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Legend -->
+        <mxCell id="legend" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#e2e8f0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="400" width="740" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg_title" value="Легенда:" style="text;html=1;strokeColor=none;fillColor=none;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="405" width="60" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg1" value="Загрузка" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="90" y="430" width="70" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg2" value="Парсинг" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#f59e0b;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="170" y="430" width="70" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg3" value="Результат" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcfce7;strokeColor=#22c55e;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="250" y="430" width="70" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg4" value="Сортировка" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fee2e2;strokeColor=#ef4444;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="330" y="430" width="70" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg5" value="Конвертация" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e8ff;strokeColor=#a855f7;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="410" y="430" width="80" height="30" as="geometry"/>
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
