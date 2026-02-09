@@ -11,21 +11,25 @@ if os.path.exists('dist'):
 if os.path.exists('build'):
     shutil.rmtree('build')
 
-# Параметры сборки
+# Параметры сборки (минимальная версия без лишних зависимостей)
 PyInstaller.__main__.run([
     'app.py',
     '--name=DataSortPro',
     '--onefile',
-    '--windowed',
-    '--icon=NONE',
+    '--console',  # Показываем консоль для отладки
     '--add-data=templates;templates',
     '--add-data=static;static',
     '--add-data=test_data.json;.',
     '--hidden-import=scipy.special._cdflib',
     '--hidden-import=scipy.cluster.hierarchy',
     '--hidden-import=scipy.stats',
-    '--collect-all=scipy',
-    '--collect-all=numpy',
+    '--exclude-module=torch',
+    '--exclude-module=pandas',
+    '--exclude-module=matplotlib',
+    '--exclude-module=PIL',
+    '--exclude-module=IPython',
+    '--exclude-module=jupyter',
+    '--exclude-module=notebook',
     '--noconfirm',
 ])
 
