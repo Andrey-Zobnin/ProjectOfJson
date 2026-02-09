@@ -4,13 +4,19 @@
 
 ## 🚀 Быстрый старт
 
-### Вариант 1: Готовый EXE (без установки Python)
+### Вариант 1: Установщик (для пользователей)
+
+1. Скачай [DataSortPro_Setup_2.1.0.exe](https://github.com/Andrey-Zobnin/ProjectOfJson/releases) из релизов
+2. Запусти установщик
+3. Готово! Ярлык появится на рабочем столе
+
+### Вариант 2: Portable EXE (без установки)
 
 1. Скачай релиз с готовым `DataSortPro.exe`
 2. Запусти `START.bat`
 3. Откроется браузер — работай!
 
-### Вариант 2: Через Python
+### Вариант 3: Через Python (для разработчиков)
 
 ```bash
 cd myapp
@@ -20,11 +26,11 @@ python app.py
 
 Открой http://127.0.0.1:5000
 
-### Вариант 3: Собрать EXE самому
+### Вариант 4: Собрать установщик самому
 
 ```bash
 cd myapp
-BUILD.bat
+BUILD_INSTALLER.bat
 ```
 
 Подробнее в [INSTALL.md](myapp/INSTALL.md)
