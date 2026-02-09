@@ -1,0 +1,26 @@
+{
+    "name": "datasortpro-desktop",
+    "version": "2.1.0",
+    "description": "DataSort Pro - Desktop Application",
+    "main": "index.html",
+    "scripts": {
+        "init": "neu update",
+        "dev": "neu run",
+        "build": "neu build",
+        "build:win": "neu build --release",
+        "create-installer": "node scripts/create-installer.js",
+        "package": "npm run build:win && npm run create-installer"
+    },
+    "keywords": [
+        "datasort",
+        "json",
+        "csv",
+        "xml",
+        "sorting"
+    ],
+    "author": "Andrey Zobnin",
+    "license": "MIT",
+    "devDependencies": {
+        "@neutralinojs/neu": "^10.0.0"
+    }
+}
